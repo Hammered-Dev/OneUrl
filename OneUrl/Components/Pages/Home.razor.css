@@ -1,0 +1,17 @@
+.window {
+    height: 100vh;
+    width: 100%;
+    backdrop-filter: blur(16px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFFFFF33;
+}
+
+.bg {
+    height: 100vh;
+    width: 100vw;
+    background: #2A7B9B;
+    background: linear-gradient(90deg, rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%);
+}
