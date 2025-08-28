@@ -8,12 +8,6 @@ main {
     flex: 1;
 }
 
-.top-bar {
-    height: 200px;
-    width: 200px;
-    background-color: aqua;
-}
-
 #blazor-error-ui {
     color-scheme: light only;
     background: lightyellow;
