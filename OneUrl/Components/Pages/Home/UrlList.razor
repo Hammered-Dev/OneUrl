@@ -1,0 +1,56 @@
+@rendermode InteractiveServer
+@inject IHttpClientFactory ClientFactory
+@using System.Text.Json
+
+<table>
+    <tr class="head">
+        <th>Target</th>
+        <th>Location</th>
+    </tr>
+    @if (records == null)
+    {
+        <div class="loading">Loading...</div>
+    }
+    else
+    {
+        @foreach(Record record in records)
+        {
+            <tr class="child">
+                <th>@record.target</th>
+                <th>@record.location</th>
+            </tr>
+        }
+    }
+</table>
+
+@code {
+    private Record[]? records;
+    private class Record
+    {
+        public string? target {get; set;}
+        public string? location {get; set;}
+    }
+
+    private async Task<Record[]> fetchData()
+    {
+        try
+        {
+            var client = ClientFactory.CreateClient();
+            var data = await client.GetFromJsonAsync<Record[]>("http://localhost:3000/manage/urls");
+            if (data == null)
+            {
+                return [];
+            }
+            return data;
+        }
+        catch
+        {
+            return [];
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        records = await fetchData();
+    }
+}

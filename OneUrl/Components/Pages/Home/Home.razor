@@ -2,13 +2,14 @@
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 
-<PageTitle>Welcome</PageTitle>
+<PageTitle>Home</PageTitle>
 
 <div class="bg">
+    <div class="title-bar">
+        <h1>Home</h1>
+    </div>
     <div class="window">
-        <h1>Welcome</h1>
-
-        <button class="btn btn-primary" @onclick="Navigate">Get Started</button>
+        <UrlList />
     </div>
 </div>
 
