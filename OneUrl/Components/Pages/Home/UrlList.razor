@@ -1,5 +1,6 @@
 @rendermode InteractiveServer
 @inject IHttpClientFactory ClientFactory
+@inject NavigationManager NavigationManager
 @using System.Text.Json
 @using Blazicons
 
@@ -60,6 +61,11 @@
         {
             return [];
         }
+    }
+
+    private void Navigate(string id)
+    {
+        NavigationManager.NavigateTo($"/rd/{id}");
     }
 
     protected override async Task OnInitializedAsync()
