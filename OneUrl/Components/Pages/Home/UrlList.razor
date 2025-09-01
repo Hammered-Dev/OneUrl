@@ -21,12 +21,12 @@
                 <td class="target">@record.Target</td>
                 <td class="location">@record.Location</td>
                 <div class="ctrl">
-                    <button class="btn btn-secondary">
-                    <Blazicon Svg="Lucide.SquareArrowOutUpRight"/>
-                    </button>
-                    <button class="btn btn-danger">
+                    <Button Color="ButtonColor.Secondary" @onclick="() => Navigate(record.Target)">
+                        <Blazicon Svg="Lucide.SquareArrowOutUpRight" />
+                    </Button>
+                    <Button Color="ButtonColor.Danger">
                         <Blazicon Svg="Lucide.Trash"/>
-                    </button>
+                    </Button>
                 </div>
             </tr>
         }
@@ -63,7 +63,7 @@
         }
     }
 
-    private void Navigate(string id)
+    private void Navigate(string? id)
     {
         NavigationManager.NavigateTo($"/rd/{id}");
     }
