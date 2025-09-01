@@ -22,10 +22,6 @@ table > tr.head {
     padding: 8px;
 }
 
-table > tr.head > th {
-    width: 50%;
-}
-
 table > .loading {
     height: 100%;
     width: 100%;
@@ -41,10 +37,24 @@ table > .child {
     justify-content: space-evenly;
     border-bottom: 1px solid white;
     outline: invert;
-    margin: 8px;
+    margin: 4px;
     padding: 8px;
 }
 
-table > .child > td {
-    width: 50%;
+table > .child > .ctrl {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+table > .space {
+    width: 92px;
+}
+
+.target {
+    width: 150px;
+}
+
+.location {
+    width: 100%;
 }

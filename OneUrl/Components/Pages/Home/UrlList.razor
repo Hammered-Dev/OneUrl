@@ -5,8 +5,8 @@
 
 <table>
     <tr class="head">
-        <th>Target</th>
-        <th>Location</th>
+        <th class="target">Target</th>
+        <th class="location">Location</th>
     </tr>
     @if (records == null)
     {
@@ -17,14 +17,16 @@
         @foreach(Record record in records)
         {
             <tr class="child">
-                <td>@record.Target</td>
-                <td>@record.Location</td>
-                <button class="btn btn-secondary">
+                <td class="target">@record.Target</td>
+                <td class="location">@record.Location</td>
+                <div class="ctrl">
+                    <button class="btn btn-secondary">
                     <Blazicon Svg="Lucide.SquareArrowOutUpRight"/>
-                </button>
-                <button class="btn btn-danger">
-                    <Blazicon Svg="Lucide.Trash"/>
-                </button>
+                    </button>
+                    <button class="btn btn-danger">
+                        <Blazicon Svg="Lucide.Trash"/>
+                    </button>
+                </div>
             </tr>
         }
     }
