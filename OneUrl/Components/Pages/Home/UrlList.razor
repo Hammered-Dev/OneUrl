@@ -1,6 +1,7 @@
 @rendermode InteractiveServer
 @inject IHttpClientFactory ClientFactory
 @using System.Text.Json
+@using Blazicons
 
 <table>
     <tr class="head">
@@ -16,8 +17,14 @@
         @foreach(Record record in records)
         {
             <tr class="child">
-                <th>@record.target</th>
-                <th>@record.location</th>
+                <td>@record.Target</td>
+                <td>@record.Location</td>
+                <button class="btn btn-secondary">
+                    <Blazicon Svg="Lucide.SquareArrowOutUpRight"/>
+                </button>
+                <button class="btn btn-danger">
+                    <Blazicon Svg="Lucide.Trash"/>
+                </button>
             </tr>
         }
     }
@@ -27,8 +34,8 @@
     private Record[]? records;
     private class Record
     {
-        public string? target {get; set;}
-        public string? location {get; set;}
+        public string? Target {get; set;}
+        public string? Location {get; set;}
     }
 
     private async Task<Record[]> fetchData()
@@ -36,7 +43,11 @@
         try
         {
             var client = ClientFactory.CreateClient();
-            var data = await client.GetFromJsonAsync<Record[]>("http://localhost:3000/manage/urls");
+            var option = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            var data = await client.GetFromJsonAsync<Record[]>("http://localhost:8000/manage/urls");
             if (data == null)
             {
                 return [];

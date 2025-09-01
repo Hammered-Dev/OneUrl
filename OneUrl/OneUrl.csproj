@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Blazicons.Lucide" Version="1.12.33" />
+  </ItemGroup>
+
 </Project>
