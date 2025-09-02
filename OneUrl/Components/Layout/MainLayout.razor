@@ -1,14 +1,11 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <NavBar />
-    <main>
-        @Body
-    </main>
-</div>
+<BlazorBootstrapLayout StickyHeader="true">
+    <SidebarSection>
+        <NavBar />
+    </SidebarSection>
 
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
-</div>
+    <ContentSection>
+        @Body
+    </ContentSection>
+</BlazorBootstrapLayout>
