@@ -22,4 +22,9 @@
     height: min-content;
     width: 100%;
     padding: 5px;
+    padding-left: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-items: end;
+    align-items: center;
 }
