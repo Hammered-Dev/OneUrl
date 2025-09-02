@@ -1,0 +1,41 @@
+@page "/rd/{target}"
+@using OneUrl.Components.Layout
+@rendermode InteractiveServer
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+@inject IHttpClientFactory ClientFactory
+
+Navigating to @Target...
+
+@code {
+    [Parameter]
+    public string? Target {get; set;}
+
+    private Link? link;
+
+    private class Link
+    {
+        public string? target {get; set;}
+        public string? location {get; set;}
+    }
+
+    private async void Navigate() {
+        try
+        {
+            var client = ClientFactory.CreateClient();
+            link = await client.GetFromJsonAsync<Link>($"http://localhost:3000/rd/{Target}");
+            await Task.Delay(3000);
+            NavigationManager.NavigateTo(link.location);
+        }
+        catch
+        {
+            Console.WriteLine("e");
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        Navigate();
+        base.OnInitialized();
+    }
+}
