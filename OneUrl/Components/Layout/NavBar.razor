@@ -1,0 +1,27 @@
+@rendermode InteractiveServer
+
+<Sidebar Href="/" ImageSrc="images/icon.svg" Title="OneUrl" DataProvider="SidebarDataProvider"/>
+
+@code {
+    IEnumerable<NavItem>? navItems;
+
+    private async Task<SidebarDataProviderResult> SidebarDataProvider(SidebarDataProviderRequest request)
+    {
+        if (navItems is null)
+        {
+            navItems = GetNavItems();
+        }
+
+        return await Task.FromResult(request.ApplyTo(navItems));
+    }
+
+    private IEnumerable<NavItem> GetNavItems()
+    {
+        navItems = new List<NavItem>
+        {
+            new NavItem{Href = "/", IconName = IconName.House, Text = "Home"}
+        };
+
+        return navItems;
+    }
+}
