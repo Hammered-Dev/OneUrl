@@ -35,6 +35,7 @@
 
 @code {
     private Record[]? records;
+    private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
     private class Record
     {
         public string? Target {get; set;}
@@ -50,7 +51,7 @@
             {
                 PropertyNameCaseInsensitive = true
             };
-            var data = await client.GetFromJsonAsync<Record[]>("http://localhost:8000/manage/urls");
+            var data = await client.GetFromJsonAsync<Record[]>($"{baseUri}/manage/urls");
             if (data == null)
             {
                 return [];

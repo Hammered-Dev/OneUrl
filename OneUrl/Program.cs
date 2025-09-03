@@ -28,4 +28,6 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
+DotNetEnv.Env.Load();
+
 app.Run();
