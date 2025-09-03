@@ -1,0 +1,24 @@
+@rendermode InteractiveServer
+
+<Modal @ref="modal" Title="Add Url">
+    <BodyTemplate></BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Secondary" @onclick="Close">Close</Button>
+    </FooterTemplate>
+</Modal>
+
+<Button Color="ButtonColor.Primary" @onclick="Open">Open</Button>
+
+@code {
+    private Modal modal = default!;
+
+    private async void Open()
+    {
+        await modal.ShowAsync();
+    }
+
+    private async void Close()
+    {
+        await modal.HideAsync();
+    }
+}
