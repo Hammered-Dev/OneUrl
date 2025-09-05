@@ -1,0 +1,8 @@
+.dialog-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.gap {
+    height: 1rem;
+}

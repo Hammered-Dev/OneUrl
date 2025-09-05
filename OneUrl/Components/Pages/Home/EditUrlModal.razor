@@ -1,0 +1,35 @@
+@rendermode InteractiveServer
+@using Blazicons
+
+<Modal @ref="modal" Title="Add Url" ModalType="ModalType.Primary">
+    <BodyTemplate>
+        <div class="dialog-body" style="gap: 1rem;">
+            <TextInput @bind-Value="target" Placeholder="Target" />
+            <TextInput @bind-Value="location" Placeholder="Location" />
+        </div>
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Secondary" @onclick="Close">Close</Button>
+    </FooterTemplate>
+</Modal>
+
+<Button Color="ButtonColor.Primary" @onclick="Open">
+    <Blazicon Svg="Lucide.Plus"/>
+    Open
+</Button>
+
+@code {
+    public Modal modal = default!;
+    private string? location;
+    private string? target;
+
+    private async Task Open()
+    {
+        await modal.ShowAsync();
+    }
+
+    private async Task Close()
+    {
+        await modal.HideAsync();
+    }
+}
