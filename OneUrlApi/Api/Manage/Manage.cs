@@ -1,3 +1,5 @@
+using OneUrlApi.Models;
+
 namespace OneUrlApi.Api.Manage;
 
 public static class Manage
@@ -12,10 +14,4 @@ public static class Manage
         group.MapDelete("/urls/{id}", (string id) => id);
 
     }
-}
-
-class UrlRecord
-{
-    required public string Target { get; set; }
-    required public string Location { get; set; }
 }
