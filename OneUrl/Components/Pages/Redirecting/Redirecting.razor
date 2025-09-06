@@ -1,0 +1,93 @@
+@page "/rd/{target}"
+@using OneUrl.Components.Layout
+@rendermode InteractiveServer
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+@inject IHttpClientFactory ClientFactory
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Redirecting...</PageTitle>
+
+<div class="window">
+    @if (error is not null) {
+        <div class="error">
+            <div class="messages">
+                An error has occurred @error?.ToString()
+            </div>
+            <div class="actions">
+                <Button Color="ButtonColor.Warning" @onclick="NavBack">Back</Button>
+            </div>
+        </div>
+    }
+    else if (link is null)
+    {
+        <div class="error">
+            <div class="messages">
+                An error has occurred "Unavaliable target"
+            </div>
+            <div class="actions">
+                <Button Color="ButtonColor.Warning" @onclick="NavBack">Back</Button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="msg">
+            <div class="messages">
+                Navigating to @link.location
+            </div>
+            <div class="actions">
+                <Button Color="ButtonColor.Primary" @onclick="NavFoward">Back</Button>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string? Target {get; set;}
+
+    private Link? link;
+    private Exception? error;
+    private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
+
+    private class Link
+    {
+        public string? target {get; set;}
+        public string? location {get; set;}
+    }
+
+    private async void Navigate() {
+        try
+        {
+            var client = ClientFactory.CreateClient();
+            link = await client.GetFromJsonAsync<Link>($"{baseUri}/rd/{Target}");
+            await Task.Delay(3000);
+            if (link is null || link.location is null) return;
+            NavigationManager.NavigateTo(link.location);
+        }
+        catch (Exception? e)
+        {
+            error = e;
+        }
+    }
+
+    private async void NavFoward()
+    {
+        var client = ClientFactory.CreateClient();
+        link = await client.GetFromJsonAsync<Link>($"{baseUri}/rd/{Target}");
+        if (link is null || link.location is null) return;
+        NavigationManager.NavigateTo(link.location);
+    }
+
+    private async void NavBack()
+    {
+        await JSRuntime.InvokeVoidAsync("history.back");
+    }
+
+    protected override void OnInitialized()
+    {
+        Navigate();
+        base.OnInitialized();
+    }
+}

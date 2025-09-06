@@ -1,0 +1,14 @@
+﻿@page "/home"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<EditUrlModal />
+<PageTitle>Home</PageTitle>
+
+<UrlList />
+
+@code {
+    private void Navigate() {
+        NavigationManager.NavigateTo("/home");
+    }
+}

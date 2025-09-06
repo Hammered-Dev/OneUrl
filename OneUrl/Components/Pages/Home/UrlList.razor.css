@@ -1,0 +1,60 @@
+table {
+    height: 100%;
+    width: 100%;
+    background-color: #FFFFFF33;
+    backdrop-filter: blur(16px);
+    margin: 8px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-items: baseline;
+}
+
+table > tr.head {
+    margin: 4px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: #FFFFFF33;
+    backdrop-filter: blur(16px);
+    padding: 8px;
+}
+
+table > .loading {
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+    display: flex;
+}
+
+table > .child {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    border-bottom: 1px solid white;
+    outline: invert;
+    margin: 4px;
+    padding: 8px;
+}
+
+table > .child > .ctrl {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+table > .space {
+    width: 92px;
+}
+
+.target {
+    width: 150px;
+}
+
+.location {
+    width: 100%;
+}

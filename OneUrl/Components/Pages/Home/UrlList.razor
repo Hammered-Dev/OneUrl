@@ -1,0 +1,76 @@
+@rendermode InteractiveServer
+@inject IHttpClientFactory ClientFactory
+@inject NavigationManager NavigationManager
+@using System.Text.Json
+@using Blazicons
+
+<table>
+    <tr class="head">
+        <th class="target">Target</th>
+        <th class="location">Location</th>
+    </tr>
+    @if (records == null)
+    {
+        <div class="loading">Loading...</div>
+    }
+    else
+    {
+        @foreach(Record record in records)
+        {
+            <tr class="child">
+                <td class="target">@record.Target</td>
+                <td class="location">@record.Location</td>
+                <div class="ctrl">
+                    <Button Color="ButtonColor.Secondary" @onclick="() => Navigate(record.Target)">
+                        <Blazicon Svg="Lucide.SquareArrowOutUpRight" />
+                    </Button>
+                    <Button Color="ButtonColor.Danger">
+                        <Blazicon Svg="Lucide.Trash"/>
+                    </Button>
+                </div>
+            </tr>
+        }
+    }
+</table>
+
+@code {
+    private Record[]? records;
+    private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
+    private class Record
+    {
+        public string? Target {get; set;}
+        public string? Location {get; set;}
+    }
+
+    private async Task<Record[]> fetchData()
+    {
+        try
+        {
+            var client = ClientFactory.CreateClient();
+            var option = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            var data = await client.GetFromJsonAsync<Record[]>($"{baseUri}/manage/urls");
+            if (data == null)
+            {
+                return [];
+            }
+            return data;
+        }
+        catch
+        {
+            return [];
+        }
+    }
+
+    private void Navigate(string? id)
+    {
+        NavigationManager.NavigateTo($"/rd/{id}");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        records = await fetchData();
+    }
+}

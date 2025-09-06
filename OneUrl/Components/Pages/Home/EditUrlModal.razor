@@ -1,0 +1,53 @@
+@rendermode InteractiveServer
+@using Blazicons
+@inject IHttpClientFactory ClientFactory
+
+<Modal @ref="modal" Title="Add Url" ModalType="ModalType.Primary">
+    <BodyTemplate>
+        <div class="dialog-body" style="gap: 1rem;">
+            <TextInput @bind-Value="target" Placeholder="Target" />
+            <TextInput @bind-Value="location" Placeholder="Location" />
+        </div>
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Secondary" @onclick="Send">Close</Button>
+    </FooterTemplate>
+</Modal>
+
+<Button Color="ButtonColor.Primary" @onclick="Open">
+    <Blazicon Svg="Lucide.Plus"/>
+    Open
+</Button>
+
+@code {
+    public Modal modal = default!;
+    private string? location;
+    private string? target;
+    private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
+
+    [Parameter]
+    required public bool IsEditing {get; set;}
+
+    private class UrlRecord
+    {
+        public string? location {get; set;}
+        public string? target {get; set;}
+    }
+
+    private async Task Open()
+    {
+        await modal.ShowAsync();
+    }
+
+    private async Task Close()
+    {
+        await modal.HideAsync();
+    }
+
+    private async Task Send()
+    {
+        var client = ClientFactory.CreateClient();
+        await client.PostAsJsonAsync($"{baseUri}/manage/urls", new UrlRecord{location = location, target = target});
+        await Close();
+    }
+}
