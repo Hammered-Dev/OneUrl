@@ -1,3 +1,6 @@
+using OneUrlApi.Api.Manage;
+using OneUrlApi.Api.Redirect;
+using OneUrlApi.Api.Setting;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,5 +19,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapGet("/", () => "Hello World");
+app.MapManageEnpoint();
+app.MapRedirectEndpoint();
+app.MapSettingEndpoint();
 
 app.Run();
