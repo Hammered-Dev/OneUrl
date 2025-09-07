@@ -1,4 +1,9 @@
 using System.Net;
+using System.Text.Json;
+using NRedisStack.RedisStackCommands;
+using NRedisStack.Search;
+using NRedisStack.Search.Literals.Enums;
+using OneUrlApi.Models;
 using StackExchange.Redis;
 
 namespace OneUrlApi.Services;
@@ -45,5 +50,33 @@ public static class RedisService
         }
 
         return keyValuePairs;
+    }
+
+    public static UrlRecord?[] IndexUrl()
+    {
+        try
+        {
+            database.FT().Info("idx:urls");
+        }
+        catch
+        {
+            var scheme = new Schema()
+                .AddTextField("Location")
+                .AddTextField("Target");
+
+            database.FT().Create("idx:urls", new FTCreateParams().AddPrefix("urls:").On(IndexDataType.HASH), scheme);
+        }
+        List<string> result = database.FT().Search("idx:urls", new("*")).ToJson();
+        List<UrlRecord?> records = [];
+
+        foreach (var item in result)
+        {
+            if (item != null)
+            {
+                records.Add(JsonSerializer.Deserialize<UrlRecord>(item));
+            }
+        }
+
+        return [.. records];
     }
 }
