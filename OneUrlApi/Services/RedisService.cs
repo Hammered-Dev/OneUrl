@@ -52,6 +52,11 @@ public static class RedisService
         return keyValuePairs;
     }
 
+    public static void Delete(string key)
+    {
+        database.KeyDelete(key);
+    }
+
     public static UrlRecord?[] IndexUrl()
     {
         try

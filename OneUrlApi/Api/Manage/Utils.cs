@@ -1,9 +1,7 @@
 namespace OneUrlApi.Api.Manage;
 
-using System.Reflection;
 using OneUrlApi.Models;
 using OneUrlApi.Services;
-using StackExchange.Redis;
 
 public static class ManageEndpointUtils
 {
@@ -16,11 +14,17 @@ public static class ManageEndpointUtils
             { "location", record.Location }
         };
         RedisService.SaveHash($"{RedisPrefix}{record.Target}", pairs);
-        return Results.StatusCode(204);
+        return Results.NoContent();
     }
 
     public static UrlRecord?[] GetRecords()
     {
         return RedisService.IndexUrl();
+    }
+
+    public static IResult Delete(string id)
+    {
+        RedisService.Delete($"{RedisPrefix}{id}");
+        return Results.NoContent();
     }
 }

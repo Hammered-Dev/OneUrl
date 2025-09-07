@@ -6,13 +6,14 @@ public static class Manage
 {
     public static void MapManageEnpoint(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/manage");
+        var group = app.MapGroup("/manage").WithTags(["Manage"]);
 
         group.MapGet("/urls", () => ManageEndpointUtils.GetRecords())
             .Produces<UrlRecord?[]>();
         group.MapPost("/urls", (UrlRecord record) => ManageEndpointUtils.ConfigureUrl(record))
             .Produces(204);
-        group.MapDelete("/urls/{id}", (string id) => id);
+        group.MapDelete("/urls/{id}", (string id) => ManageEndpointUtils.Delete(id))
+            .Produces(204);
 
     }
 }
