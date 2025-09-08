@@ -8,7 +8,8 @@ public static class Setting
     {
         var group = app.MapGroup("/setting").WithTags(["Settings"]);
 
-        group.MapPost("/", () => "H");
+        group.MapPost("/", SettingsUtil.SaveSettings)
+            .Produces(204);
         group.MapGet("/", SettingsUtil.GetSettings)
             .Produces<SettingsModel>();
     }
