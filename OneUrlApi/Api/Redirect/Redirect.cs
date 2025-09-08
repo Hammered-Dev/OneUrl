@@ -1,3 +1,5 @@
+using OneUrlApi.Models;
+
 namespace OneUrlApi.Api.Redirect;
 
 public static class Redirect
@@ -6,6 +8,8 @@ public static class Redirect
     {
         var group = app.MapGroup("/redirect").WithTags(["Redirect"]);
 
-        group.MapGet("/", () => "Hello");
+        group.MapGet("/", RedirectUtils.GetRecord)
+            .Produces<UrlRecord>()
+            .ProducesProblem(404);
     }
 }
