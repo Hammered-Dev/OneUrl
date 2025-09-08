@@ -83,15 +83,20 @@ public static class RedisService
                 scheme
             );
         }
-        List<string> result = database.FT().Search("idx:urls", new("*")).ToJson();
+        List<Document> result = database.FT().Search("idx:urls", new("*")).Documents;
         List<UrlRecord?> records = [];
+        JsonSerializerOptions options = new()
+        {
+            PropertyNameCaseInsensitive = true
+        };
 
         foreach (var item in result)
         {
-            if (item != null)
-            {
-                records.Add(JsonSerializer.Deserialize<UrlRecord>(item));
-            }
+            Dictionary<string, string?> itemData = [];
+            itemData.Add("location", item["location"]);
+            itemData.Add("target", item["Target"]);
+            var json = JsonSerializer.Serialize(itemData);
+            records.Add(JsonSerializer.Deserialize<UrlRecord>(json, options));
         }
 
         return [.. records];
