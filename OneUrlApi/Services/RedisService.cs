@@ -10,7 +10,11 @@ namespace OneUrlApi.Services;
 
 public static class RedisService
 {
-    private static readonly ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
+    private static readonly ConfigurationOptions conf = new()
+    {
+        EndPoints = { { "localhost", 6379 }, },
+    };
+    private static readonly ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(conf);
     private static readonly IDatabase database = redis.GetDatabase();
 
     public static void SaveString(string key, string value)
@@ -69,7 +73,15 @@ public static class RedisService
                 .AddTextField("Location")
                 .AddTextField("Target");
 
-            database.FT().Create("idx:urls", new FTCreateParams().AddPrefix("urls:").On(IndexDataType.HASH), scheme);
+            FTCreateParams createParams = new FTCreateParams()
+                .AddPrefix("records:")
+                .On(IndexDataType.HASH);
+
+            database.FT().Create(
+                "idx:urls",
+                createParams,
+                scheme
+            );
         }
         List<string> result = database.FT().Search("idx:urls", new("*")).ToJson();
         List<UrlRecord?> records = [];
