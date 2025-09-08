@@ -20,6 +20,9 @@
     justify-items: center;
     align-items: center;
     justify-content: space-between;
+    max-width: 512px;
+    align-self: center;
+    justify-self: center;
 }
 
 .actions {
@@ -37,4 +40,8 @@
     flex-direction: column;
     justify-content: stretch;
     height: 100%;
+}
+
+.loading {
+    padding: 1rem;
 }

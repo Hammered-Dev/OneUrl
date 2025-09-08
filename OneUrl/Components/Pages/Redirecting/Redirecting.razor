@@ -9,38 +9,13 @@
 <PageTitle>Redirecting...</PageTitle>
 
 <div class="window">
-    @if (error is not null) {
-        <div class="error">
-            <div class="messages">
-                An error has occurred @error?.ToString()
-            </div>
-            <div class="actions">
-                <Button Color="ButtonColor.Warning" @onclick="NavBack">Back</Button>
-            </div>
-        </div>
-    }
-    else if (link is null)
-    {
-        <div class="error">
-            <div class="messages">
-                An error has occurred "Unavaliable target"
-            </div>
-            <div class="actions">
-                <Button Color="ButtonColor.Warning" @onclick="NavBack">Back</Button>
-            </div>
-        </div>
-    }
-    else
-    {
-        <div class="msg">
-            <div class="messages">
-                Navigating to @link.location
-            </div>
-            <div class="actions">
-                <Button Color="ButtonColor.Primary" @onclick="NavFoward">Back</Button>
-            </div>
-        </div>
-    }
+    <Image Src="images/brand.svg" Alt="Brand"/>
+    <div>
+        Redirecting to @link
+    </div>
+    <div class="loading">
+        <Spinner Type="SpinnerType.Dots" Color="SpinnerColor.Primary"/>
+    </div>
 </div>
 
 @code {
