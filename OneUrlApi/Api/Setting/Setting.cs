@@ -1,3 +1,5 @@
+using OneUrlApi.Models;
+
 namespace OneUrlApi.Api.Setting;
 
 public static class Setting
@@ -7,6 +9,7 @@ public static class Setting
         var group = app.MapGroup("/setting").WithTags(["Settings"]);
 
         group.MapPost("/", () => "H");
-        group.MapPatch("/", () => "H");
+        group.MapGet("/", SettingsUtil.GetSettings)
+            .Produces<SettingsModel>();
     }
 }
