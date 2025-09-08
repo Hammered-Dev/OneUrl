@@ -101,4 +101,10 @@ public static class RedisService
 
         return [.. records];
     }
+
+    public static bool CheckKeyExists(string key)
+    {
+        bool exists = database.KeyExists(key);
+        return exists;
+    }
 }

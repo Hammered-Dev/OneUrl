@@ -1,1 +1,35 @@
 @page "/settings"
+@using System.Text.Json
+@rendermode InteractiveServer
+@inject IHttpClientFactory ClientFactory
+
+<PageTitle>Settings</PageTitle>
+<NumberInput @ref="delayInput" TValue="int?" @bind-Value="@delayValue"/>
+
+@code {
+    private class SettingsModel
+    {
+        required public int RedirectDelay {get; set;}
+    }
+    private SettingsModel? delay;
+    private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
+    private NumberInput<int?> delayInput = default!;
+    private int? delayValue;
+    private JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
+    private async void GetSettings()
+    {
+        var client = ClientFactory.CreateClient();
+
+        delay = await client.GetFromJsonAsync<SettingsModel>($"{baseUri}/setting", options);
+    }
+
+    protected override void OnInitialized()
+    {
+        GetSettings();
+        base.OnInitialized();
+    }
+}
