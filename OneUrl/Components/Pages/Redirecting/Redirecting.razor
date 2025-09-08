@@ -8,6 +8,7 @@
 
 <PageTitle>Redirecting...</PageTitle>
 
+<Toasts Messages="messages" />
 <div class="window">
     <Image Src="images/brand.svg" Alt="Brand"/>
     <div>
@@ -55,6 +56,7 @@
         }
         catch (Exception? e)
         {
+            ShowDanger();
             error = e;
         }
     }
