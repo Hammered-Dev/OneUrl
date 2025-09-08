@@ -12,7 +12,7 @@ public static class Manage
             .Produces<UrlRecord?[]>();
         group.MapPost("/urls", (UrlRecord record) => ManageEndpointUtils.ConfigureUrl(record))
             .Produces(204);
-        group.MapDelete("/urls/{id}", (string id) => ManageEndpointUtils.Delete(id))
+        group.MapDelete("/urls/{id}", (string id) => ManageEndpointUtils.Delete($"records:{id}"))
             .Produces(204);
 
     }

@@ -11,7 +11,7 @@ public static class ManageEndpointUtils
         Dictionary<string, string> pairs = new()
         {
             { "Target", record.Target },
-            { "location", record.Location }
+            { "Location", record.Location }
         };
         RedisService.SaveHash($"{RedisPrefix}{record.Target}", pairs);
         return Results.NoContent();
