@@ -93,7 +93,7 @@ public static class RedisService
         foreach (var item in result)
         {
             Dictionary<string, string?> itemData = [];
-            itemData.Add("location", item["location"]);
+            itemData.Add("location", item["Location"]);
             itemData.Add("target", item["Target"]);
             var json = JsonSerializer.Serialize(itemData);
             records.Add(JsonSerializer.Deserialize<UrlRecord>(json, options));
