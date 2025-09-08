@@ -25,11 +25,23 @@
     private Link? link;
     private Exception? error;
     private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
+    List<ToastMessage> messages = [];
 
     private class Link
     {
         public string? target {get; set;}
         public string? location {get; set;}
+    }
+
+    private void ShowDanger() {
+        messages.Add(
+            new ToastMessage
+            {
+                Type = ToastType.Danger,
+                Title = "Failed to redirect",
+                Content = @<div>@error</div>
+            }
+        );
     }
 
     private async void Navigate() {
