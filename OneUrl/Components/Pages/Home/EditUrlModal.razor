@@ -2,7 +2,7 @@
 @using Blazicons
 @inject IHttpClientFactory ClientFactory
 
-<Modal @ref="modal" Title="Add Url" ModalType="ModalType.Primary">
+<Modal @ref="modal" Title="Add Url">
     <BodyTemplate>
         <div class="dialog-body" style="gap: 1rem;">
             <TextInput @bind-Value="target" Placeholder="Target" />
@@ -10,7 +10,7 @@
         </div>
     </BodyTemplate>
     <FooterTemplate>
-        <Button Color="ButtonColor.Secondary" @onclick="Send">Close</Button>
+        <Button Color="ButtonColor.Primary" @onclick="Send">Create</Button>
     </FooterTemplate>
 </Modal>
 

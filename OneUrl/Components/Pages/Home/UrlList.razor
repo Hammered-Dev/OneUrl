@@ -24,7 +24,7 @@
                     <Button Color="ButtonColor.Secondary" @onclick="() => Navigate(record.Target)">
                         <Blazicon Svg="Lucide.SquareArrowOutUpRight" />
                     </Button>
-                    <Button Color="ButtonColor.Danger">
+                    <Button Color="ButtonColor.Danger" @onclick="() => deleteData(record.Target)">
                         <Blazicon Svg="Lucide.Trash"/>
                     </Button>
                 </div>
@@ -62,6 +62,12 @@
         {
             return [];
         }
+    }
+
+    private async Task deleteData(string? id)
+    {
+        var client = ClientFactory.CreateClient();
+        await client.DeleteAsync($"{baseUri}/manage/urls/{id}");
     }
 
     private void Navigate(string? id)
