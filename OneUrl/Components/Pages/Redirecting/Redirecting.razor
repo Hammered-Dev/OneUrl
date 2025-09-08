@@ -61,7 +61,7 @@
         try
         {
             var client = ClientFactory.CreateClient();
-            link = await client.GetFromJsonAsync<Link>($"{baseUri}/rd/{Target}");
+            link = await client.GetFromJsonAsync<Link>($"{baseUri}/redirect/{Target}");
             await Task.Delay(3000);
             if (link is null || link.location is null) return;
             NavigationManager.NavigateTo(link.location);
