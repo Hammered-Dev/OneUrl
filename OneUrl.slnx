@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="OneUrl/OneUrl.csproj" />
   <Project Path="OneUrlApi/OneUrlApi.csproj" />
+  <Project Path="OneUrlAuth/OneUrlAuth.csproj" />
 </Solution>
