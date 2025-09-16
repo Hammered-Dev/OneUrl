@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OneUrlAuth;
 using OneUrlAuth.Components;
 using OneUrlAuth.Components.Account;
 using OneUrlAuth.Data;
@@ -55,6 +56,8 @@ builder.Services.AddOpenIddict()
     });
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+builder.Services.AddHostedService<Worker>();
 
 var app = builder.Build();
 
