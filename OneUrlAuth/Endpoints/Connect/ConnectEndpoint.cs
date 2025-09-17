@@ -7,5 +7,6 @@ public static class ConnectEndpoint
         var group = app.MapGroup("/connect");
 
         group.MapGet("/authorize", ConnectEndpointUtils.Authorize);
+        group.MapPost("/authorize", ConnectEndpointUtils.Authorize);
     }
 }

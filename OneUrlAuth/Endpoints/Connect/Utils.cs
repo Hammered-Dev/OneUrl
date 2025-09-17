@@ -109,10 +109,14 @@ public static class ConnectEndpointUtils
         UserManager<IdentityUser> userManager
     )
     {
-        if (context.Request.Form.Where(parameter => parameter.Key == "submit.Accept").Any())
+        if (context.Request.Method != "POST")
         {
-            return await Accept(context, applicationManager, authorizationManager, scopeManager, userManager);
+            return null;
         }
+        if (context.Request.Form.Where(parameter => parameter.Key == "submit.Accept").Any())
+            {
+                return await Accept(context, applicationManager, authorizationManager, scopeManager, userManager);
+            }
 
         if (context.Request.Form.Where(parameter => parameter.Key == "submit.Deny").Any())
         {
