@@ -114,9 +114,9 @@ public static class ConnectEndpointUtils
             return null;
         }
         if (context.Request.Form.Where(parameter => parameter.Key == "submit.Accept").Any())
-            {
-                return await Accept(context, applicationManager, authorizationManager, scopeManager, userManager);
-            }
+        {
+            return await Accept(context, applicationManager, authorizationManager, scopeManager, userManager);
+        }
 
         if (context.Request.Form.Where(parameter => parameter.Key == "submit.Deny").Any())
         {
@@ -259,5 +259,36 @@ public static class ConnectEndpointUtils
                     context.Request.Form : context.Request.Query;
                 return Results.Redirect($"/Consent{QueryString.Create(parameters)}");
         }
+    }
+
+    public static async Task<IResult> Exchange(
+        HttpContext context,
+        IOpenIddictApplicationManager applicationManager
+    )
+    {
+        var request = context.GetOpenIddictServerRequest();
+
+        if (request!.IsAuthorizationCodeGrantType())
+        {
+            var application = await applicationManager.FindByClientIdAsync(request?.ClientId ?? "") ??
+                throw new InvalidOperationException("Application not found");
+
+            var identity = new ClaimsIdentity(TokenValidationParameters.DefaultAuthenticationType);
+
+            identity.SetClaim(Claims.Subject, await applicationManager.GetClientIdAsync(application));
+            identity.SetClaim(Claims.Name, await applicationManager.GetDisplayNameAsync(application));
+
+            identity.SetDestinations(static claim => claim.Type switch
+            {
+                Claims.Name when claim.Subject!.HasScope(Scopes.Profile)
+                    => [Destinations.AccessToken, Destinations.IdentityToken],
+
+                _ => [Destinations.AccessToken]
+            });
+
+            return Results.SignIn(new ClaimsPrincipal(identity), properties: null, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+        }
+
+        throw new NotImplementedException("The specified grant is not implemented.");
     }
 }

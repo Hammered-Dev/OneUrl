@@ -8,5 +8,6 @@ public static class ConnectEndpoint
 
         group.MapGet("/authorize", ConnectEndpointUtils.Authorize);
         group.MapPost("/authorize", ConnectEndpointUtils.Authorize);
+        group.MapPost("/token", ConnectEndpointUtils.Exchange);
     }
 }
