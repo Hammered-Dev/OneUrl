@@ -6,8 +6,8 @@ public static class ConnectEndpoint
     {
         var group = app.MapGroup("/connect");
 
-        group.MapGet("/authorize", ConnectEndpointUtils.Authorize);
-        group.MapPost("/authorize", ConnectEndpointUtils.Authorize);
+        group.MapGet("/authorize", (Delegate)ConnectEndpointUtils.Authorize);
+        group.MapPost("/authorize", (Delegate)ConnectEndpointUtils.Authorize);
         group.MapPost("/token", ConnectEndpointUtils.Exchange);
     }
 }
