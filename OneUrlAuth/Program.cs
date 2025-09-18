@@ -5,6 +5,7 @@ using OneUrlAuth;
 using OneUrlAuth.Components;
 using OneUrlAuth.Components.Account;
 using OneUrlAuth.Data;
+using OneUrlAuth.Endpoints.Connect;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -84,6 +85,7 @@ app.MapRazorComponents<App>()
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
+app.MapConnectEndpoints();
 
 app.UseAuthentication();
 app.UseAuthorization();
