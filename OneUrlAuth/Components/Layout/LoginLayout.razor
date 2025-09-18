@@ -1,0 +1,18 @@
+@inherits LayoutComponentBase
+@using Microsoft.FluentUI.AspNetCore.Components
+
+<FluentLayout>
+    <FluentHeader>
+        Login
+    </FluentHeader>
+
+    <FluentStack Width="100%">
+        @Body
+    </FluentStack>
+</FluentLayout>
+
+<FluentToastProvider />
+<FluentDialogProvider />
+<FluentTooltipProvider />
+<FluentMessageBarProvider />
+<FluentMenuProvider />
