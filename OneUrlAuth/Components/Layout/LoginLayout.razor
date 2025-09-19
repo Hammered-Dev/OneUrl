@@ -1,18 +1,18 @@
 @inherits LayoutComponentBase
 @using Microsoft.FluentUI.AspNetCore.Components
 
+<FluentToastProvider />
+<FluentDialogProvider />
+<FluentTooltipProvider />
+<FluentMessageBarProvider Style="margin: 1rem" />
+<FluentMenuProvider />
+
 <FluentLayout>
     <FluentHeader>
-        Login
+        <img src="brand.svg" height="50px" width="auth"/>
     </FluentHeader>
 
     <FluentStack Width="100%">
         @Body
     </FluentStack>
 </FluentLayout>
-
-<FluentToastProvider />
-<FluentDialogProvider />
-<FluentTooltipProvider />
-<FluentMessageBarProvider />
-<FluentMenuProvider />
