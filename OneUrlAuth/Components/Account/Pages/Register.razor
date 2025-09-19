@@ -26,11 +26,11 @@
             <DataAnnotationsValidator />
             <FluentValidationSummary />
 
-            <FluentTextField Name="Input.Email" id="Input.Email" Label="Email" Placeholder="user@example.com" @bind-Value="Input.Email" Style="width: 100%" />
+            <FluentTextField TextFieldType="TextFieldType.Email" Name="Input.Email" id="Input.Email" Label="Email" Placeholder="user@example.com" @bind-Value="Input.Email" Style="width: 100%" />
 
-            <FluentTextField Name="Input.Password" id="Input.Password" Label="Password" Placeholder="password" @bind-Value="Input.Password" AutoComplete="new-password" Style="width: 100%" />
+            <FluentTextField TextFieldType="TextFieldType.Password" Name="Input.Password" id="Input.Password" Label="Password" Placeholder="password" @bind-Value="Input.Password" style="width: 100%" />
 
-            <FluentTextField Name="Input.ConfirmPassword" id="Input.ConfirmPassword" Label="Confirm Password" Placeholder="password" @bind-Value="Input.ConfirmPassword" AutoComplete="new-password" Style="width: 100%" />
+            <FluentTextField TextFieldType="TextFieldType.Password" Name="Input.ConfirmPassword" id="Input.ConfirmPassword" Label="Confirm Password" Placeholder="password" @bind-Value="Input.ConfirmPassword" Style="width: 100%" />
 
             <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" >Register</FluentButton>
         </FluentStack>
