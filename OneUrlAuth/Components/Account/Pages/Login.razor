@@ -15,49 +15,47 @@
 
 <PageTitle>Log in</PageTitle>
 
-<div class="row">
-    <div class="col-lg-6 m-4">
-        <section>
-            <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
-                <FluentStack Orientation="Orientation.Vertical">
-                    <DataAnnotationsValidator />
-                    <FluentValidationSummary />
+<FluentStack Orientation="Orientation.Horizontal" style="margin: 1rem;">
+    <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login" style="width: 100%;">
+        <FluentStack Orientation="Orientation.Vertical">
+            <DataAnnotationsValidator />
+            <FluentValidationSummary />
 
-                    <FluentTextField @bind-Value=Input.Email Label="Username" Placeholder="user@example.com" TextFieldType="TextFieldType.Email" Spellcheck="true" style="width: 100%;" />
-                    <FluentValidationMessage For="@(() => Input.Email)" />
+            <FluentTextField @bind-Value=Input.Email Label="Username" Placeholder="user@example.com" TextFieldType="TextFieldType.Email" Spellcheck="true" style="width: 100%;" />
+            <FluentValidationMessage For="@(() => Input.Email)" />
 
-                    <FluentTextField @bind-Value=Input.Password Label="Password" Placeholder="Password" TextFieldType="TextFieldType.Password" style="width: 100%;" />
-                    <FluentValidationMessage For="@(() => Input.Password)" />
+            <FluentTextField @bind-Value=Input.Password Label="Password" Placeholder="Password" TextFieldType="TextFieldType.Password" style="width: 100%;" />
+            <FluentValidationMessage For="@(() => Input.Password)" />
 
-                    <FluentCheckbox @bind-Value=Input.RememberMe>Remember me</FluentCheckbox>
-                    
-                    <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">Log in</FluentButton>
-                    <div>
-                        <p>
-                            <a href="Account/ForgotPassword">Forgot your password?</a>
-                        </p>
-                        <p>
-                            <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Register as a new user</a>
-                        </p>
-                        <p>
-                            <a href="Account/ResendEmailConfirmation">Resend email confirmation</a>
-                        </p>
-                    </div>
-                </FluentStack>
-            </EditForm>
-        </section>
-    </div>
-    <div class="col-lg-4 col-lg-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
+            <FluentCheckbox @bind-Value=Input.RememberMe>Remember me</FluentCheckbox>
+            
+            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">Log in</FluentButton>
+            <div>
+                <p>
+                    <a href="Account/ForgotPassword">Forgot your password?</a>
+                </p>
+                <p>
+                    <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Register as a new user</a>
+                </p>
+                <p>
+                    <a href="Account/ResendEmailConfirmation">Resend email confirmation</a>
+                </p>
+            </div>
+        </FluentStack>
+    </EditForm>
+
+    @if (enableExternalLogin)
+    {
+        <FluentStack Orientation="Orientation.Vertical" Style="width: 100%">
+            <h3>Login with other service</h3>
             <ExternalLoginPicker />
-        </section>
-    </div>
-</div>
+        </FluentStack>
+    }
+</FluentStack>
 
 @code {
     private string? errorMessage;
+    private bool enableExternalLogin = false;
 
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
