@@ -7,6 +7,7 @@
 @using Microsoft.FluentUI.AspNetCore.Components
 @using OneUrlAuth.Components.Layout
 @using OneUrlAuth.Data
+@inject IMessageService MessageService
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject ILogger<Login> Logger
@@ -73,6 +74,13 @@
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
         }
+    }
+
+    async Task ShowErrorMessage()
+    {
+        var type = MessageIntent.Error;
+
+        await MessageService.ShowMessageBarAsync(errorMessage?? "", type);
     }
 
     public async Task LoginUser()
