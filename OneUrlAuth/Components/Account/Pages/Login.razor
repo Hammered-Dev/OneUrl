@@ -22,10 +22,10 @@
             <DataAnnotationsValidator />
             <FluentValidationSummary />
 
-            <FluentTextField @bind-Value=Input.Email Label="Username" Placeholder="user@example.com" TextFieldType="TextFieldType.Email" Spellcheck="true" style="width: 100%;" />
+            <FluentTextField Name="Input.Email" @bind-Value=Input.Email Label="Username" Placeholder="user@example.com" TextFieldType="TextFieldType.Email" Spellcheck="true" style="width: 100%;" />
             <FluentValidationMessage For="@(() => Input.Email)" />
 
-            <FluentTextField @bind-Value=Input.Password Label="Password" Placeholder="Password" TextFieldType="TextFieldType.Password" style="width: 100%;" />
+            <FluentTextField Name="Input.Password" @bind-Value=Input.Password Label="Password" Placeholder="Password" TextFieldType="TextFieldType.Password" style="width: 100%;" />
             <FluentValidationMessage For="@(() => Input.Password)" />
 
             <FluentCheckbox @bind-Value=Input.RememberMe>Remember me</FluentCheckbox>
@@ -107,6 +107,7 @@
         else
         {
             errorMessage = "Error: Invalid login attempt.";
+            await ShowErrorMessage();
         }
     }
 
