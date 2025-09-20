@@ -17,12 +17,17 @@
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject IMessageService MessageService
 
 <PageTitle>Register</PageTitle>
 
 <FluentStack Orientation="Orientation.Vertical">
-    <img src="brand.svg" height="96px" width="auto"/>
-    <FluentIcon Value="@(new Icons.Regular.Size48.PersonAdd())" />
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Center">
+        <FluentIcon Value="@(new Icons.Regular.Size48.PersonAdd())" />
+        <h3>
+            Register
+        </h3>
+    </FluentStack>
     <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register" style="width: 100%;">
         <FluentStack Orientation="Orientation.Vertical">
             <DataAnnotationsValidator />
@@ -71,6 +76,7 @@
         if (!result.Succeeded)
         {
             identityErrors = result.Errors;
+            MessageService.ShowMessageBar(Message ?? "", MessageIntent.Error);
             return;
         }
 
