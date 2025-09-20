@@ -20,7 +20,9 @@
 
 <PageTitle>Register</PageTitle>
 
-<FluentStack Orientation="Orientation.Horizontal">
+<FluentStack Orientation="Orientation.Vertical">
+    <img src="brand.svg" height="96px" width="auto"/>
+    <FluentIcon Value="@(new Icons.Regular.Size48.PersonAdd())" />
     <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register" style="width: 100%;">
         <FluentStack Orientation="Orientation.Vertical">
             <DataAnnotationsValidator />
