@@ -1,8 +1,10 @@
 ﻿@page "/Account/ConfirmEmail"
+@layout LoginLayout
 
 @using System.Text
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
+@using OneUrlAuth.Components.Layout
 @using OneUrlAuth.Data
 
 @inject UserManager<ApplicationUser> UserManager
@@ -10,7 +12,7 @@
 
 <PageTitle>Confirm email</PageTitle>
 
-<h1>Confirm email</h1>
+<h3>Confirm email</h3>
 <StatusMessage Message="@statusMessage" />
 
 @code {
