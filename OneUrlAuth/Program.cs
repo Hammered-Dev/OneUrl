@@ -81,6 +81,9 @@ else
 app.UseHttpsRedirection();
 
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseAntiforgery();
 
 app.MapStaticAssets();
@@ -91,7 +94,5 @@ app.MapRazorComponents<App>()
 app.MapAdditionalIdentityEndpoints();
 app.MapConnectEndpoints();
 
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.Run();
