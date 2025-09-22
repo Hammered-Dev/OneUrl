@@ -1,4 +1,11 @@
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
+using Microsoft.IdentityModel.Tokens;
 using OneUrl.Components;
+
+DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +15,39 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddHttpClient();
 builder.Services.AddBlazorBootstrap();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = "Cookies";
+    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+})
+.AddCookie("Cookie")
+.AddOpenIdConnect(option =>
+{
+    option.Authority = Environment.GetEnvironmentVariable("AUTH_SERVER");
+    option.ClientId = Environment.GetEnvironmentVariable("CLIENT_ID");
+    option.ResponseType = "code";
+    option.Scope.Add("openid");
+    option.Scope.Add("profile");
+    option.Scope.Add("email");
+    option.CallbackPath = "login-callback";
+
+    option.SaveTokens = true;
+    option.GetClaimsFromUserInfoEndpoint = true;
+
+    option.TokenValidationParameters = new TokenValidationParameters
+    {
+        NameClaimType = "name",
+        RoleClaimType = "role"
+    };
+});
+
+builder.Services.AddAuthorizationBuilder()
+    .SetFallbackPolicy(new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build());
+
+builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
 
 var app = builder.Build();
 
@@ -27,7 +67,5 @@ app.UseAntiforgery();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-
-DotNetEnv.Env.Load();
 
 app.Run();
