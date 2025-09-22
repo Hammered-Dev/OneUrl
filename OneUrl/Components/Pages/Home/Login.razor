@@ -1,0 +1,14 @@
+﻿@page "/login"
+@rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager
+
+<Button @onclick="NavigateLogin">Login</Button>
+
+@code {
+
+    private void NavigateLogin()
+    {
+        NavigationManager.NavigateTo("Auth/Login", true);
+    }
+}

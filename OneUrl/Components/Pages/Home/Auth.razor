@@ -1,0 +1,47 @@
+﻿@page "/Auth/{action}"
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.OpenIdConnect
+
+@inject IConfiguration Configuration
+@inject NavigationManager NavigationManager
+@inject IAuthenticationService AuthenticationService
+
+@code {
+    [Parameter]
+    public String? Action { get; set; }
+    [CascadingParameter]
+    public HttpContext? context { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        switch (Action?.ToLowerInvariant())
+        {
+            case "login":
+                await AuthenticationService.ChallengeAsync(
+                    context: context!,
+                    scheme: OpenIdConnectDefaults.AuthenticationScheme,
+                    properties: new AuthenticationProperties {
+                        RedirectUri = "/"
+                    }
+                );
+                break;
+            case "logout":
+                await AuthenticationService.SignOutAsync(
+                    context!,
+                    OpenIdConnectDefaults.AuthenticationScheme,
+                    new AuthenticationProperties {
+                        RedirectUri = "/"
+                    }
+                );
+
+                await AuthenticationService.SignOutAsync(
+                    context!,
+                    scheme: "Cookies",
+                    properties: null
+                );
+
+                NavigationManager.NavigateTo("/");
+                break;
+        }
+    }
+}
