@@ -1,7 +1,13 @@
 ﻿@page "/Account/InvalidUser"
+@layout LoginLayout
+
+@using OneUrlAuth.Components.Layout
+@using Microsoft.FluentUI.AspNetCore.Components
 
 <PageTitle>Invalid user</PageTitle>
 
-<h3>Invalid user</h3>
+<FluentStack Orientation="Orientation.Vertical">
+    <h3>Invalid user</h3>
 
-<StatusMessage />
+    <StatusMessage />
+</FluentStack>

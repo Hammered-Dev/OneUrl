@@ -1,8 +1,12 @@
 ﻿@page "/Account/AccessDenied"
+@layout LoginLayout
+
+@using OneUrlAuth.Components.Layout
+@using Microsoft.FluentUI.AspNetCore.Components
 
 <PageTitle>Access denied</PageTitle>
 
-<header>
+<FluentStack Orientation="Orientation.Vertical">
     <h1 class="text-danger">Access denied</h1>
     <p class="text-danger">You do not have access to this resource.</p>
-</header>
+</FluentStack>

@@ -1,8 +1,11 @@
 ﻿@page "/Account/ConfirmEmailChange"
+@layout LoginLayout
 
 @using System.Text
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.FluentUI.AspNetCore.Components
+@using OneUrlAuth.Components.Layout
 @using OneUrlAuth.Data
 
 @inject UserManager<ApplicationUser> UserManager
@@ -11,9 +14,11 @@
 
 <PageTitle>Confirm email change</PageTitle>
 
-<h1>Confirm email change</h1>
+<FluentStack Orientation="Orientation.Vertical">
+    <h1>Confirm email change</h1>
 
-<StatusMessage Message="@message" />
+    <StatusMessage Message="@message" />
+</FluentStack>
 
 @code {
     private string? message;
