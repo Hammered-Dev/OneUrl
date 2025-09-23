@@ -16,22 +16,24 @@ public class Worker(IServiceProvider iServiceProvider) : IHostedService
 
         var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
 
-        if (await manager.FindByClientIdAsync("console", cancellationToken) is null)
+        if (await manager.FindByClientIdAsync(Environment.GetEnvironmentVariable("CLIENT_ID")!, cancellationToken) is null)
         {
             await manager.CreateAsync(new OpenIddictApplicationDescriptor
             {
-                ClientId = "console",
+                ClientId = Environment.GetEnvironmentVariable("CLIENT_ID"),
                 ClientSecret = "388D45FA-B36B-4988-BA59-B187D329C207",
                 DisplayName = "Test App",
                 Permissions = {
                     Permissions.Endpoints.Authorization,
                     Permissions.Endpoints.Token,
                     Permissions.ResponseTypes.Code,
-                    Permissions.GrantTypes.AuthorizationCode
+                    Permissions.GrantTypes.AuthorizationCode,
+                    Permissions.Scopes.Email,
+                    Permissions.Scopes.Profile,
                 },
                 RedirectUris = {
-                    new Uri("http://localhost")
-                }
+                    new Uri(Environment.GetEnvironmentVariable("REDIRECT_URIS")?? "")
+                },
             }, cancellationToken);
         }
     }

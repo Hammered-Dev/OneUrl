@@ -30,7 +30,7 @@ builder.Services.AddAuthentication(options =>
     option.Scope.Add("openid");
     option.Scope.Add("profile");
     option.Scope.Add("email");
-    option.CallbackPath = "login-callback";
+    option.CallbackPath = "/Auth/login";
 
     option.SaveTokens = true;
     option.GetClaimsFromUserInfoEndpoint = true;

@@ -8,6 +8,8 @@ using OneUrlAuth.Components.Account;
 using OneUrlAuth.Data;
 using OneUrlAuth.Endpoints.Connect;
 
+DotNetEnv.Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
