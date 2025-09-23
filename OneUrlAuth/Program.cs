@@ -7,6 +7,8 @@ using OneUrlAuth.Components;
 using OneUrlAuth.Components.Account;
 using OneUrlAuth.Data;
 using OneUrlAuth.Endpoints.Connect;
+using OpenIddict.Abstractions;
+using static OpenIddict.Abstractions.OpenIddictConstants;
 
 DotNetEnv.Env.Load();
 
@@ -53,6 +55,12 @@ builder.Services.AddOpenIddict()
     .AddServer(options =>
     {
         options.AllowAuthorizationCodeFlow();
+        options.RegisterScopes(
+            OpenIddictConstants.Scopes.Email,
+            OpenIddictConstants.Scopes.OpenId,
+            OpenIddictConstants.Scopes.OfflineAccess,
+            OpenIddictConstants.Scopes.Profile
+        );
         options.SetTokenEndpointUris("connect/token");
         options.SetAuthorizationEndpointUris("connect/authorize");
         options.AddDevelopmentEncryptionCertificate().AddDevelopmentSigningCertificate();
