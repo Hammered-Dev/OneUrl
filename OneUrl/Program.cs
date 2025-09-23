@@ -21,7 +21,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = "Cookies";
     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
 })
-.AddCookie("Cookie")
+.AddCookie("Cookies")
 .AddOpenIdConnect(option =>
 {
     option.Authority = Environment.GetEnvironmentVariable("AUTH_SERVER");
