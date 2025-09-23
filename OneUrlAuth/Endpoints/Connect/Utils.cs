@@ -37,7 +37,17 @@ public static class ConnectEndpointUtils
         }
 
         var principal = result.Principal;
-        return Results.SignIn(principal, null, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+
+        var identity = new ClaimsIdentity(
+            OpenIddictServerAspNetCoreDefaults.AuthenticationScheme,
+            Claims.Subject,
+            Claims.Role
+        );
+        identity.AddClaim(Claims.Subject, principal.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        identity.AddClaims(principal.Claims);
+
+        var newPricipal = new ClaimsPrincipal(identity);
+        return Results.SignIn(newPricipal, null, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
     }
 
     public static async Task<IResult> Exchange(

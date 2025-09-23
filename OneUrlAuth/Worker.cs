@@ -21,7 +21,6 @@ public class Worker(IServiceProvider iServiceProvider) : IHostedService
             await manager.CreateAsync(new OpenIddictApplicationDescriptor
             {
                 ClientId = Environment.GetEnvironmentVariable("CLIENT_ID"),
-                ClientSecret = "388D45FA-B36B-4988-BA59-B187D329C207",
                 DisplayName = "Test App",
                 Permissions = {
                     Permissions.Endpoints.Authorization,
