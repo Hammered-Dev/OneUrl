@@ -1,6 +1,8 @@
 @page "/rd/{target}"
+@using Microsoft.AspNetCore.Authorization
 @using OneUrl.Components.Layout
 @rendermode InteractiveServer
+@attribute [AllowAnonymous]
 @layout EmptyLayout
 @inject NavigationManager NavigationManager
 @inject IHttpClientFactory ClientFactory
