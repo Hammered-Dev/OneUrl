@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
     <PackageReference Include="NRedisStack" Version="1.1.0" />
+    <PackageReference Include="OpenIddict.Server.AspNetCore" Version="7.1.0" />
+    <PackageReference Include="OpenIddict.Validation.AspNetCore" Version="7.1.0" />
+    <PackageReference Include="OpenIddict.Validation.SystemNetHttp" Version="7.1.0" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.7.2" />
   </ItemGroup>
 

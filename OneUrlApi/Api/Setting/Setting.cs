@@ -9,6 +9,7 @@ public static class Setting
         var group = app.MapGroup("/setting").WithTags(["Settings"]);
 
         group.MapPost("/", SettingsUtil.SaveSettings)
+            .RequireAuthorization("DefaultScope")
             .Produces(204);
         group.MapGet("/", SettingsUtil.GetSettings)
             .Produces<SettingsModel>();
