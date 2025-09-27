@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.IdentityModel.Tokens;
+using OneUrl;
 using OneUrl.Components;
 
 DotNetEnv.Env.Load();
@@ -13,7 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<AccessTokenHandler>();
+builder.Services.AddHttpClient("Test", options => options.BaseAddress = new Uri(Environment.GetEnvironmentVariable("AUTH_SERVER")!))
+    .AddHttpMessageHandler<AccessTokenHandler>();
 builder.Services.AddBlazorBootstrap();
 
 builder.Services.AddAuthentication(options =>
