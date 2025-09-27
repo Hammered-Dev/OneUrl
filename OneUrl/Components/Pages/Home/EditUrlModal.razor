@@ -23,7 +23,6 @@
     public Modal modal = default!;
     private string? location;
     private string? target;
-    private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
 
     [Parameter]
     required public bool IsEditing {get; set;}
@@ -46,8 +45,8 @@
 
     private async Task Send()
     {
-        var client = ClientFactory.CreateClient();
-        await client.PostAsJsonAsync($"{baseUri}/manage/urls", new UrlRecord{location = location, target = target});
+        var client = ClientFactory.CreateClient("DefaultClient");
+        await client.PostAsJsonAsync("manage/urls", new UrlRecord{location = location, target = target});
         await Close();
     }
 }

@@ -16,7 +16,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<AccessTokenHandler>();
-builder.Services.AddHttpClient("Test", options => options.BaseAddress = new Uri(Environment.GetEnvironmentVariable("AUTH_SERVER")!))
+builder.Services.AddHttpClient("DefaultClient", options => options.BaseAddress = new Uri(Environment.GetEnvironmentVariable("AUTH_SERVER")!))
     .AddHttpMessageHandler<AccessTokenHandler>();
 builder.Services.AddBlazorBootstrap();
 

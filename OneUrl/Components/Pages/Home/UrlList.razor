@@ -35,7 +35,6 @@
 
 @code {
     private Record[]? records;
-    private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
     private class Record
     {
         public string? Target {get; set;}
@@ -46,12 +45,12 @@
     {
         try
         {
-            var client = ClientFactory.CreateClient();
+            var client = ClientFactory.CreateClient("DefaultClient");
             var option = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
-            var data = await client.GetFromJsonAsync<Record[]>($"{baseUri}/manage/urls");
+            var data = await client.GetFromJsonAsync<Record[]>("/manage/urls");
             if (data == null)
             {
                 return [];
@@ -67,7 +66,7 @@
     private async Task deleteData(string? id)
     {
         var client = ClientFactory.CreateClient();
-        await client.DeleteAsync($"{baseUri}/manage/urls/{id}");
+        await client.DeleteAsync("/manage/urls/{id}");
     }
 
     private void Navigate(string? id)
