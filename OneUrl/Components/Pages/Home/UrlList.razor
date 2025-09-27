@@ -65,7 +65,7 @@
 
     private async Task deleteData(string? id)
     {
-        var client = ClientFactory.CreateClient();
+        var client = ClientFactory.CreateClient("DefaultClient");
         await client.DeleteAsync("/manage/urls/{id}");
     }
 
