@@ -1,5 +1,12 @@
 using OneUrl.Components;
 
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.AspNetCore.Authorization;
+
+DotNetEnv.Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +15,43 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddHttpClient();
 builder.Services.AddBlazorBootstrap();
+
+string authDomain = Environment.GetEnvironmentVariable("AUTH_DOMAIN")!;
+string authClientId = Environment.GetEnvironmentVariable("AUTH_CLIENTID")!;
+Uri authRedirectUri = new(Environment.GetEnvironmentVariable("AUTH_REDIRECT_URI")!);
+Uri authLogourRedirectUri = new(Environment.GetEnvironmentVariable("AUTH_LOGOUT_REDIRECT_URI")!);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie(options =>
+{
+    options.LoginPath = new PathString("Account/Login");
+})
+.AddOpenIdConnect(options =>
+{
+    options.Authority = Environment.GetEnvironmentVariable("AUTH_DOMAIN")!;
+    options.ClientId = Environment.GetEnvironmentVariable("AUTH_CLIENTID")!;
+
+    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.ResponseType = OpenIdConnectResponseType.Code;
+
+    options.SaveTokens = true;
+    options.GetClaimsFromUserInfoEndpoint = true;
+
+    options.MapInboundClaims = false;
+    options.TokenValidationParameters.NameClaimType = JwtRegisteredClaimNames.Name;
+    options.TokenValidationParameters.RoleClaimType = "role";
+});
+
+var requiredAuthPolicy = new AuthorizationPolicyBuilder()
+    .RequireAuthenticatedUser()
+    .Build();
+
+builder.Services.AddAuthorizationBuilder()
+    .SetDefaultPolicy(requiredAuthPolicy);
 
 var app = builder.Build();
 
@@ -21,13 +65,13 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseAntiforgery();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-
-DotNetEnv.Env.Load();
 
 app.Run();
