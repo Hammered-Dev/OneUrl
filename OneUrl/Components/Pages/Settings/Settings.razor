@@ -22,7 +22,7 @@
 
     private async void GetSettings()
     {
-        var client = ClientFactory.CreateClient();
+        var client = ClientFactory.CreateClient("DefaultClient");
 
         delay = await client.GetFromJsonAsync<SettingsModel>($"{baseUri}/setting", options);
     }

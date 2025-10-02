@@ -46,7 +46,7 @@
 
     private async Task Send()
     {
-        var client = ClientFactory.CreateClient();
+        var client = ClientFactory.CreateClient("DefaultClient");
         await client.PostAsJsonAsync($"{baseUri}/manage/urls", new UrlRecord{location = location, target = target});
         await Close();
     }

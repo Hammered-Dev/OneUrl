@@ -46,7 +46,7 @@
     {
         try
         {
-            var client = ClientFactory.CreateClient();
+            var client = ClientFactory.CreateClient("DefaultClient");
             var option = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
