@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
+using OneUrl;
 
 DotNetEnv.Env.Load();
 
@@ -52,6 +53,13 @@ builder.Services.AddAuthorizationBuilder()
     .SetFallbackPolicy(new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
         .Build());
+
+builder.Services.AddScoped<AccessTokenHandler>();
+builder.Services.AddHttpClient("DefaultClient", options =>
+{
+    options.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_URL")!);
+})
+.AddHttpMessageHandler<AccessTokenHandler>();
 
 var app = builder.Build();
 
