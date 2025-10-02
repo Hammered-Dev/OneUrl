@@ -19,17 +19,14 @@ builder.Services.AddBlazorBootstrap();
 string authDomain = Environment.GetEnvironmentVariable("AUTH_DOMAIN")!;
 string authClientId = Environment.GetEnvironmentVariable("AUTH_CLIENTID")!;
 Uri authRedirectUri = new(Environment.GetEnvironmentVariable("AUTH_REDIRECT_URI")!);
-Uri authLogourRedirectUri = new(Environment.GetEnvironmentVariable("AUTH_LOGOUT_REDIRECT_URI")!);
+// Uri authLogourRedirectUri = new(Environment.GetEnvironmentVariable("AUTH_LOGOUT_REDIRECT_URI")!);
 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
-.AddCookie(options =>
-{
-    options.LoginPath = new PathString("Account/Login");
-})
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddOpenIdConnect(options =>
 {
     options.Authority = Environment.GetEnvironmentVariable("AUTH_DOMAIN")!;
@@ -46,12 +43,12 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters.RoleClaimType = "role";
 });
 
-var requiredAuthPolicy = new AuthorizationPolicyBuilder()
-    .RequireAuthenticatedUser()
-    .Build();
-
 builder.Services.AddAuthorizationBuilder()
-    .SetDefaultPolicy(requiredAuthPolicy);
+    .SetDefaultPolicy(
+        new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build()
+    );
 
 var app = builder.Build();
 
