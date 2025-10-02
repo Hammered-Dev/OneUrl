@@ -30,6 +30,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.Authority = Environment.GetEnvironmentVariable("AUTH_DOMAIN")!;
     options.ClientId = Environment.GetEnvironmentVariable("AUTH_CLIENTID")!;
+    options.ClientSecret = Environment.GetEnvironmentVariable("AUTH_CLIENT_SECRECT");
     options.CallbackPath = new PathString("/Auth/Login");
 
     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
