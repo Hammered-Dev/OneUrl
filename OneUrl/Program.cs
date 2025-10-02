@@ -20,11 +20,6 @@ builder.Services.AddRazorComponents()
 builder.Services.AddHttpClient();
 builder.Services.AddBlazorBootstrap();
 
-string authDomain = Environment.GetEnvironmentVariable("AUTH_DOMAIN")!;
-string authClientId = Environment.GetEnvironmentVariable("AUTH_CLIENTID")!;
-Uri authRedirectUri = new(Environment.GetEnvironmentVariable("AUTH_REDIRECT_URI")!);
-// Uri authLogourRedirectUri = new(Environment.GetEnvironmentVariable("AUTH_LOGOUT_REDIRECT_URI")!);
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -35,6 +30,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.Authority = Environment.GetEnvironmentVariable("AUTH_DOMAIN")!;
     options.ClientId = Environment.GetEnvironmentVariable("AUTH_CLIENTID")!;
+    options.CallbackPath = new PathString("/Auth/Login");
 
     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.ResponseType = OpenIdConnectResponseType.Code;
@@ -45,14 +41,16 @@ builder.Services.AddAuthentication(options =>
     options.MapInboundClaims = false;
     options.TokenValidationParameters.NameClaimType = JwtRegisteredClaimNames.Name;
     options.TokenValidationParameters.RoleClaimType = "role";
+
+    options.Scope.Clear();
+    options.Scope.Add(OpenIdConnectScope.OpenId);
+    options.Scope.Add(OpenIdConnectScope.Profile);
 });
 
 builder.Services.AddAuthorizationBuilder()
-    .SetDefaultPolicy(
-        new AuthorizationPolicyBuilder()
+    .SetFallbackPolicy(new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
-        .Build()
-    );
+        .Build());
 
 var app = builder.Build();
 
