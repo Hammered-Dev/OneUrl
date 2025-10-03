@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -14,19 +15,22 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(jwtOptions =>
     {
+        jwtOptions.Authority = Environment.GetEnvironmentVariable("AUTH_ISSUER");
+        jwtOptions.Audience = Environment.GetEnvironmentVariable("AUTH_AUDIENCE");
+
         jwtOptions.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
             ValidateAudience = true,
-            ValidIssuer = Environment.GetEnvironmentVariable("AUTH_ISSUER"),
-            ValidAudience = Environment.GetEnvironmentVariable("AUTH_AUDIENCE"),
+            ValidateLifetime = true,
+            ValidateIssuer = true,
+            ValidateIssuerSigningKey = true
         };
-
-        jwtOptions.Authority = Environment.GetEnvironmentVariable("AUTH_ISSUER");
     });
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddAuthorizationBuilder()
     .SetFallbackPolicy(new AuthorizationPolicyBuilder().RequireClaim("scope").Build());
