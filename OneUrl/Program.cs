@@ -54,13 +54,14 @@ builder.Services.AddAuthorizationBuilder()
         .RequireAuthenticatedUser()
         .Build());
 
-builder.Services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<AccessTokenHandler>();
 builder.Services.AddHttpClient("DefaultClient", options =>
 {
     options.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_URL")!);
 })
 .AddHttpMessageHandler<AccessTokenHandler>();
+
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

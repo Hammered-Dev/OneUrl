@@ -6,15 +6,16 @@ using Microsoft.AspNetCore.Authentication;
 public class AccessTokenHandler(IHttpContextAccessor httpContextAccessor) : 
     DelegatingHandler
 {
+    private readonly IHttpContextAccessor contextAccessor = httpContextAccessor;
     protected override async Task<HttpResponseMessage> SendAsync(
         HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        if (httpContextAccessor.HttpContext is null)
+        if (contextAccessor.HttpContext is null)
         {
             throw new Exception("HttpContext not available");
         }
 
-        var accessToken = await httpContextAccessor.HttpContext
+        var accessToken = await contextAccessor.HttpContext
             .GetTokenAsync("access_token");
 
         request.Headers.Authorization =
