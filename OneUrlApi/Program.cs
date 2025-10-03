@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.OpenApi;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using OneUrlApi.Api.Manage;
 using OneUrlApi.Api.Redirect;
 using OneUrlApi.Api.Setting;
@@ -12,7 +13,10 @@ DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+});
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -39,8 +43,8 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference("/docs");
+    app.MapOpenApi().AllowAnonymous();
+    app.MapScalarApiReference("/docs").AllowAnonymous();
 }
 
 app.UseHttpsRedirection();
@@ -48,9 +52,32 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGet("/", () => "Hello World");
+app.MapGet("/", () => "Hello World").AllowAnonymous();
 app.MapManageEnpoint();
 app.MapRedirectEndpoint();
 app.MapSettingEndpoint();
 
 app.Run();
+
+internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvider authenticationSchemeProvider) : IOpenApiDocumentTransformer
+{
+    public async Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
+    {
+        var authenticationSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
+        if (authenticationSchemes.Any(authScheme => authScheme.Name == "Bearer"))
+        {
+            var requirements = new Dictionary<string, OpenApiSecurityScheme>
+            {
+                ["Bearer"] = new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    In = ParameterLocation.Header,
+                    BearerFormat = "Json Web Token"
+                }
+            };
+            document.Components ??= new OpenApiComponents();
+            document.Components.SecuritySchemes = requirements;
+        }
+    }
+}
