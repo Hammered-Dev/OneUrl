@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using OneUrl;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 DotNetEnv.Env.Load();
 
@@ -62,6 +63,9 @@ builder.Services.AddHttpClient("DefaultClient", options =>
 .AddHttpMessageHandler<AccessTokenHandler>();
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddHttpClient();
+builder.Services.AddFluentUIComponents();
 
 var app = builder.Build();
 
