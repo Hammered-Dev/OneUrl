@@ -54,6 +54,7 @@ builder.Services.AddAuthorizationBuilder()
         .RequireAuthenticatedUser()
         .Build());
 
+builder.Services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<AccessTokenHandler>();
 builder.Services.AddHttpClient("DefaultClient", options =>
 {
