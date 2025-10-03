@@ -12,7 +12,7 @@ public static class RedisService
 {
     private static readonly ConfigurationOptions conf = new()
     {
-        EndPoints = { { "localhost", 6379 }, },
+        EndPoints = { { Environment.GetEnvironmentVariable("REDIS_HOST")!, int.Parse(Environment.GetEnvironmentVariable("REDIS_PORT")!) }, },
     };
     private static readonly ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(conf);
     private static readonly IDatabase database = redis.GetDatabase();
