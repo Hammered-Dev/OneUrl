@@ -10,6 +10,7 @@ public static class Redirect
 
         group.MapGet("/", RedirectUtils.GetRecord)
             .Produces<UrlRecord>()
-            .ProducesProblem(404);
+            .ProducesProblem(404)
+            .AllowAnonymous();
     }
 }
