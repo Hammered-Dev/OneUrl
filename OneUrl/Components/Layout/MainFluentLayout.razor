@@ -1,0 +1,17 @@
+@inherits LayoutComponentBase
+
+@using Microsoft.FluentUI.AspNetCore.Components
+
+<FluentToastProvider />
+<FluentDialogProvider />
+<FluentTooltipProvider />
+<FluentMessageBarProvider />
+<FluentMenuProvider />
+
+<FluentMainLayout NavMenuTitle="Navigation menu">
+    <Header>OneUrl</Header>
+    <Body>@Body</Body>
+    <NavMenuContent>
+        <FluentNavLink Href="/home" Icon="@(new Icons.Regular.Size24.Home())">Home</FluentNavLink>
+    </NavMenuContent>
+</FluentMainLayout>
