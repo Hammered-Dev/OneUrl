@@ -3,38 +3,16 @@
 @inject NavigationManager NavigationManager
 @using System.Text.Json
 @using Blazicons
+@using Microsoft.FluentUI.AspNetCore.Components
 
-<table>
-    <tr class="head">
-        <th class="target">Target</th>
-        <th class="location">Location</th>
-    </tr>
-    @if (records == null)
-    {
-        <div class="loading">Loading...</div>
-    }
-    else
-    {
-        @foreach(Record record in records)
-        {
-            <tr class="child">
-                <td class="target">@record.Target</td>
-                <td class="location">@record.Location</td>
-                <div class="ctrl">
-                    <Button Color="ButtonColor.Secondary" @onclick="() => Navigate(record.Target)">
-                        <Blazicon Svg="Lucide.SquareArrowOutUpRight" />
-                    </Button>
-                    <Button Color="ButtonColor.Danger" @onclick="() => deleteData(record.Target)">
-                        <Blazicon Svg="Lucide.Trash"/>
-                    </Button>
-                </div>
-            </tr>
-        }
-    }
-</table>
+<FluentDataGrid Items="@records.AsQueryable()" Pagination="@paginationState">
+    <PropertyColumn Property="@(p => p.Target)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.Location)" Sortable="true" />
+</FluentDataGrid>
 
 @code {
-    private Record[]? records;
+    private Record[] records = [];
+    PaginationState paginationState = new PaginationState {ItemsPerPage = 10};
     private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
     private class Record
     {

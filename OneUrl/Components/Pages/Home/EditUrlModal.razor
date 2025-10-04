@@ -1,5 +1,7 @@
 @rendermode InteractiveServer
 @using Blazicons
+@using Microsoft.FluentUI.AspNetCore.Components
+@using OneUrl.Models
 @inject IHttpClientFactory ClientFactory
 
 <Modal @ref="modal" Title="Add Url">
@@ -14,10 +16,9 @@
     </FooterTemplate>
 </Modal>
 
-<Button Color="ButtonColor.Primary" @onclick="Open">
-    <Blazicon Svg="Lucide.Plus"/>
-    Open
-</Button>
+<FluentButton IconStart="new Icons.Regular.Size16.Add()" OnClick="Open" Appearance="Appearance.Accent">
+    Add
+</FluentButton>
 
 @code {
     public Modal modal = default!;
@@ -27,12 +28,6 @@
 
     [Parameter]
     required public bool IsEditing {get; set;}
-
-    private class UrlRecord
-    {
-        public string? location {get; set;}
-        public string? target {get; set;}
-    }
 
     private async Task Open()
     {
