@@ -1,22 +1,12 @@
 @rendermode InteractiveServer
 @using Blazicons
 @using Microsoft.FluentUI.AspNetCore.Components
+@using OneUrl.Components.Pages.Home.Shared
 @using OneUrl.Models
 @inject IHttpClientFactory ClientFactory
+@inject IDialogService DialogService
 
-<Modal @ref="modal" Title="Add Url">
-    <BodyTemplate>
-        <div class="dialog-body" style="gap: 1rem;">
-            <TextInput @bind-Value="target" Placeholder="Target" />
-            <TextInput @bind-Value="location" Placeholder="Location" />
-        </div>
-    </BodyTemplate>
-    <FooterTemplate>
-        <Button Color="ButtonColor.Primary" @onclick="Send">Create</Button>
-    </FooterTemplate>
-</Modal>
-
-<FluentButton IconStart="new Icons.Regular.Size16.Add()" OnClick="Open" Appearance="Appearance.Accent">
+<FluentButton IconStart="new Icons.Regular.Size16.Add()" @onclick="Open" Appearance="Appearance.Accent">
     Add
 </FluentButton>
 
@@ -31,7 +21,19 @@
 
     private async Task Open()
     {
-        await modal.ShowAsync();
+        DialogParameters parameters = new()
+        {
+            Title = "Add Url",
+            Width = "500px"
+        };
+
+        IDialogReference dialogReference = await DialogService.ShowDialogAsync<EditUrlDialog>(parameters: parameters);
+        DialogResult? result = await dialogReference.Result;
+
+        if (result.Data is not null)
+        {
+            await Send((UrlRecord)result.Data);
+        }
     }
 
     private async Task Close()
@@ -39,10 +41,10 @@
         await modal.HideAsync();
     }
 
-    private async Task Send()
+    private async Task Send(UrlRecord record)
     {
         var client = ClientFactory.CreateClient("DefaultClient");
-        await client.PostAsJsonAsync($"{baseUri}/manage/urls", new UrlRecord{location = location, target = target});
+        await client.PostAsJsonAsync($"{baseUri}/manage/urls", record);
         await Close();
     }
 }

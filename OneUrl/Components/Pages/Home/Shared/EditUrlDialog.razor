@@ -1,0 +1,15 @@
+@implements IDialogContentComponent<UrlRecord>;
+
+@using Microsoft.FluentUI.AspNetCore.Components
+@using OneUrl.Models
+
+<FluentTextField @bind-Value="Content.target" Label="Target" Style="width: 100%" />
+<FluentTextField @bind-Value="Content.location" Label="Location" Style="width: 100%" />
+
+@code {
+    [Parameter]
+    public UrlRecord Content { get; set; } = default!;
+
+    [CascadingParameter]
+    public FluentDialog? Dialog { get; set; }
+}
