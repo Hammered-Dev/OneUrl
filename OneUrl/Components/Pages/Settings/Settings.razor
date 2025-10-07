@@ -1,20 +1,25 @@
 @page "/settings"
+@layout MainFluentLayout
 @using System.Text.Json
+@using Microsoft.FluentUI.AspNetCore.Components
+@using OneUrl.Components.Layout
+@using System.Diagnostics
 @rendermode InteractiveServer
 @inject IHttpClientFactory ClientFactory
 
 <PageTitle>Settings</PageTitle>
-<NumberInput @ref="delayInput" TValue="int?" @bind-Value="@delayValue"/>
+<FluentNumberField @bind-Value="delay.RedirectDelay" />
 
 @code {
     private class SettingsModel
     {
         required public int RedirectDelay {get; set;}
     }
-    private SettingsModel? delay;
+    private SettingsModel delay = new SettingsModel
+    {
+        RedirectDelay = 0
+    };
     private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
-    private NumberInput<int?> delayInput = default!;
-    private int? delayValue;
     private JsonSerializerOptions options = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
@@ -24,7 +29,18 @@
     {
         var client = ClientFactory.CreateClient("DefaultClient");
 
-        delay = await client.GetFromJsonAsync<SettingsModel>($"{baseUri}/setting", options);
+        try
+        {
+            var data = await client.GetFromJsonAsync<SettingsModel>($"{baseUri}/setting", options);
+
+            if (data is not null)
+            {
+                delay = data;
+            }
+        } catch (Exception e)
+        {
+            Debug.WriteLine(e);
+        }
     }
 
     protected override void OnInitialized()
