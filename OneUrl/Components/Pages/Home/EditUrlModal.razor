@@ -12,12 +12,7 @@
 
 @code {
     public Modal modal = default!;
-    private string? location;
-    private string? target;
     private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
-
-    [Parameter]
-    required public bool IsEditing {get; set;}
 
     private async Task Open()
     {
@@ -27,7 +22,7 @@
             Width = "500px"
         };
 
-        IDialogReference dialogReference = await DialogService.ShowDialogAsync<EditUrlDialog>(parameters: parameters);
+        IDialogReference dialogReference = await DialogService.ShowDialogAsync<EditUrlDialog>(parameters: parameters,data: new UrlRecord{});
         DialogResult? result = await dialogReference.Result;
 
         if (result.Data is not null)
@@ -36,15 +31,9 @@
         }
     }
 
-    private async Task Close()
-    {
-        await modal.HideAsync();
-    }
-
     private async Task Send(UrlRecord record)
     {
         var client = ClientFactory.CreateClient("DefaultClient");
         await client.PostAsJsonAsync($"{baseUri}/manage/urls", record);
-        await Close();
     }
 }
