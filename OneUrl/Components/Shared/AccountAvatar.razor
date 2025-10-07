@@ -1,0 +1,18 @@
+@using Microsoft.FluentUI.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Authorization
+
+<AuthorizeView>
+    <Authorized>
+        <FluentPersona
+            Name="@context.User.Identity?.Name"
+            ImageSize="50px"
+        />
+    </Authorized>
+    <NotAuthorized>
+        <FluentPersona 
+            Name="Login"
+            Image="@(new Icons.Regular.Size48.Person().ToDataUri(size: "25px"))"
+            ImageSize="50px"
+        />
+    </NotAuthorized>
+</AuthorizeView>
