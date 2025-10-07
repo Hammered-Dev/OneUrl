@@ -20,7 +20,6 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddHttpClient();
-builder.Services.AddBlazorBootstrap();
 
 builder.Services.AddAuthentication(options =>
 {
