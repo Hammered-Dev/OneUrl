@@ -1,6 +1,8 @@
 @inherits LayoutComponentBase
 
 @using Microsoft.FluentUI.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Authorization
+@using OneUrl.Components.Shared
 
 <FluentToastProvider />
 <FluentDialogProvider />
@@ -8,11 +10,15 @@
 <FluentMessageBarProvider />
 <FluentMenuProvider />
 
-<FluentMainLayout NavMenuTitle="Navigation menu">
-    <Header>OneUrl</Header>
-    <Body>@Body</Body>
-    <NavMenuContent>
-        <FluentNavLink Href="/home" Icon="@(new Icons.Regular.Size24.Home())">Home</FluentNavLink>
-        <FluentNavLink Href="/settings" Icon="@(new Icons.Regular.Size24.Settings())">Settings</FluentNavLink>
-    </NavMenuContent>
-</FluentMainLayout>
+<CascadingAuthenticationState>
+    <FluentMainLayout NavMenuTitle="Navigation menu">
+        <Header>
+            <FluentStack Orientation="Orientation.Landscape"
+        </Header>
+        <Body>@Body</Body>
+        <NavMenuContent>
+            <FluentNavLink Href="/home" Icon="@(new Icons.Regular.Size24.Home())">Home</FluentNavLink>
+            <FluentNavLink Href="/settings" Icon="@(new Icons.Regular.Size24.Settings())">Settings</FluentNavLink>
+        </NavMenuContent>
+    </FluentMainLayout>
+</CascadingAuthenticationState>
