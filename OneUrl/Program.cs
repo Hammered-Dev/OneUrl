@@ -4,10 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Server;
 using OneUrl;
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -60,6 +57,11 @@ builder.Services.AddHttpClient("DefaultClient", options =>
     options.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_URL")!);
 })
 .AddHttpMessageHandler<AccessTokenHandler>();
+
+builder.Services.AddHttpClient("AnonymousClient", options =>
+{
+    options.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_URL")!);
+});
 
 builder.Services.AddHttpContextAccessor();
 
