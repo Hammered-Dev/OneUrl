@@ -1,0 +1,15 @@
+@using Microsoft.FluentUI.AspNetCore.Components
+
+<FluentCard MinimalStyle="true">
+    <FluentStack Orientation="Orientation.Horizontal" 
+        HorizontalAlignment="HorizontalAlignment.SpaceBetween"
+        VerticalAlignment="VerticalAlignment.Center">
+        Redirect Delay
+        <FluentNumberField @bind-Value="@Value" Placeholder="Redirect Delay (ms)"/>
+    </FluentStack>
+</FluentCard>
+
+@code {
+    [Parameter]
+    public int Value {get; set;}
+}

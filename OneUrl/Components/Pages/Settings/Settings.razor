@@ -3,6 +3,7 @@
 @using Microsoft.FluentUI.AspNetCore.Components
 @using OneUrl.Components.Layout
 @using System.Diagnostics
+@using OneUrl.Components.Pages.Settings.Shared
 @rendermode InteractiveServer
 @inject IHttpClientFactory ClientFactory
 
@@ -10,12 +11,7 @@
 @if (delay is not null)
 {
     <FluentCard MinimalStyle="true">
-        <FluentStack Orientation="Orientation.Horizontal" 
-            HorizontalAlignment="HorizontalAlignment.SpaceBetween"
-            VerticalAlignment="VerticalAlignment.Center">
-            Redirect Delay
-            <FluentNumberField @bind-Value="delay.RedirectDelay" Placeholder="Redirect Delay (ms)"/>
-        </FluentStack>
+        <RedirectDelayCard @bind-Value="delay.RedirectDelay" />
     </FluentCard>
 }
 
