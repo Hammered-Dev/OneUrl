@@ -10,9 +10,7 @@
 <PageTitle>Settings</PageTitle>
 @if (delay is not null)
 {
-    <FluentCard MinimalStyle="true">
-        <RedirectDelayCard @bind-Value="delay.RedirectDelay" />
-    </FluentCard>
+    <RedirectDelayCard @bind-Value="delay.RedirectDelay" />
 }
 
 @code {

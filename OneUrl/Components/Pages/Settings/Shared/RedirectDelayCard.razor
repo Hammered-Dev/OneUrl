@@ -12,4 +12,13 @@
 @code {
     [Parameter]
     public int Value {get; set;}
+
+    [Parameter]
+    public EventCallback<int> ValueChanged {get; set;}
+
+    private async Task OnInputChanged(ChangeEventArgs e)
+    {
+        Value = int.Parse(e.Value?.ToString()?? "");
+        await ValueChanged.InvokeAsync(Value);
+    }
 }
