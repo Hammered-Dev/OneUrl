@@ -1,5 +1,8 @@
 @page "/rd/{target}"
+@attribute [AllowAnonymous]
+@using Microsoft.AspNetCore.Authorization
 @using OneUrl.Components.Layout
+@using OneUrl.Models
 @rendermode InteractiveServer
 @layout EmptyLayout
 @inject NavigationManager NavigationManager
@@ -9,12 +12,11 @@
 <PageTitle>Redirecting...</PageTitle>
 
 <div class="window">
-    <Image Src="images/brand.svg" Alt="Brand"/>
     <div>
         Redirecting to @link
     </div>
     <div class="loading">
-        <Spinner Type="SpinnerType.Dots" Color="SpinnerColor.Primary"/>
+        
     </div>
 </div>
 
@@ -22,21 +24,15 @@
     [Parameter]
     public string? Target {get; set;}
 
-    private Link? link;
+    private UrlRecord? link;
     private Exception? error;
     private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
-
-    private class Link
-    {
-        public string? target {get; set;}
-        public string? location {get; set;}
-    }
 
     private async void Navigate() {
         try
         {
-            var client = ClientFactory.CreateClient();
-            link = await client.GetFromJsonAsync<Link>($"{baseUri}/redirect/{Target}");
+            var client = ClientFactory.CreateClient("AnonymousClient");
+            link = await client.GetFromJsonAsync<UrlRecord>($"/redirect/{Target}");
             await Task.Delay(3000);
             if (link is null || link.location is null) return;
             NavigationManager.NavigateTo(link.location);
@@ -50,7 +46,7 @@
     private async void NavFoward()
     {
         var client = ClientFactory.CreateClient();
-        link = await client.GetFromJsonAsync<Link>($"{baseUri}/rd/{Target}");
+        link = await client.GetFromJsonAsync<UrlRecord>($"{baseUri}/rd/{Target}");
         if (link is null || link.location is null) return;
         NavigationManager.NavigateTo(link.location);
     }

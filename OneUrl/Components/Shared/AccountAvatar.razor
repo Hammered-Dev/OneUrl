@@ -1,0 +1,22 @@
+@rendermode InteractiveServer
+
+@using Microsoft.FluentUI.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Authorization
+
+<AuthorizeView>
+    <Authorized>
+        <FluentProfileMenu
+            HeaderLabel="OneUrl"
+            EMail="@context.User.Identity?.Name"
+            FullName="@context.User.Identity?.Name"
+            PopoverStyle="min-width: 330px;"
+        />
+    </Authorized>
+    <NotAuthorized>
+        <FluentPersona 
+            Name="Login"
+            Image="@(new Icons.Regular.Size48.Person().ToDataUri(size: "25px"))"
+            ImageSize="40px"
+        />
+    </NotAuthorized>
+</AuthorizeView>
