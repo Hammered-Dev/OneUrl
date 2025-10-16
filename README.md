@@ -1,26 +1,45 @@
 # OneUrl
-OneUrl is a platform to store and share all your beloved links. It store the links and let users access them with a single url. The project is developed with .NET. The project is still under development🚧, and we wellcome everyone to join us and share your ideas with us.
+OneUrl is a platform to store and share all your beloved links. It store the links and let users access them with a single url. The project is developed with .NET. The project is still under development🚧, we wellcome everyone to join and share your ideas with us.
 
 ## Getting started
 ### Prerequisites
 If your running the project manually your have to install and run the excutable. However, if you preferred running OneUrl on Docker or other container platforms, just make sure you have them installed.
 #### Runing manually
 - Redis
-- An OAuth provider
+- An OAuth provider (See [Authencation](#authentication))
 #### Docker (or other container engine)
 - Redis
-- An OAuth Provider
+- An OAuth Provider (See [Authencation](#authentication))
 
-**⚠️ The project's container will only be tested on Docker, if you are using other platform, you may need to deal with the platform specific problems yourself.**
+> **⚠️ The project's container will only be tested on Docker, if you are using other platform, you may need to deal with the platform specific problems yourself.**
 
 ### Installation
 #### Manually
+> ⚠️ The startup script is under process, you might end up messing up your system environment variables.
 1. Go to release page and download the latest realease installer.
-2. Run, and the dashboard is avaliable on `localhost:7136`
-#### Docker
-```bash
-docker run .....
+2. Set the envirement varibles.
+3. Run, and the dashboard is avaliable on `localhost:5000`
+#### Docker Compose (Highly recommended)
+```yaml
+service:
+    api:
+        image: img1
+        environment:
+            AUTH_ISSUER=<OAuth domain>
+            AUTH_AUDIENCE=<OAuth ClientID>
+            REDIS_HOST=
+            REDIS_PORT=
+    web:
+        image: img2
+        environment:
+            API_URL=api
+            AUTH_DOMAIN=<OAuth domain>
+            AUTH_CLIENTID=<OAuth ClientID>
+            AUTH_CLIENT_SECRECT=<OAuth Client Secrect>
+            AUTH_REDIRECT_URI=<OAuth Redirect Uri>
 ```
+### Authentication
+The project right now required an OAuth provider, you will need to configure an OAuth provider for logging in. You can use any authentication services that are capatible with OAuth 2.0 (Open id connect). If you don't know where to start, Auth0 is a good choise, or you can self host one with [Identity Server from Duende](https://duendesoftware.com/products/identityserver).
 
 ## Contributing
 ### Issues
@@ -39,8 +58,11 @@ You're contribution is very important for the project to improve. If you have so
 2. What are the key changes? Describe the changes you made, you may also mark the file name or provide the most important code.
 3. Oter informations. Any other informations that show how your code work. Screnshots, logs, etc.
 
+### Dev Prerequisites
+Please read [develop.md](link.to.develop.md).
+
 ### Code of Conduct
-Link to CODE_OF_CONDUCT.md
+Please read the [CODE_OF_CONDUCT.md](link.to.codeofconduct).
 
 ## License
-The project use GLP Link to LICENSE
+The project is open sourced under [GLP v3 license](linktolincense).
