@@ -1,6 +1,12 @@
 # OneUrl: Your Single Hub 🔗
 OneUrl is a platform to store and share all your beloved links, offerring single and clean link for every access. 
 
+![.NetBadge](https://img.shields.io/badge/.Net-512BD4?logo=dotnet&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?logo=redis&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Under%20Development-red)
+![License](https://img.shields.io/badge/License-GPLv3-blue)
+![Contribution Welcome](https://img.shields.io/badge/Contributions-Welcome-brightgreen)
+
 The project is developed with .NET.
 
 **Status**: Under development🚧. We wellcome everyone to join and share your ideas with us.
@@ -11,7 +17,7 @@ You will need following services to use OneUrl.
 #### Runing manually
 - Redis
 - An OAuth provider (See [Authencation](#authentication))
-#### Docker (or other container engine)
+#### Docker (or other container platform)
 - Redis
 - An OAuth Provider (See [Authencation](#authentication))
 
