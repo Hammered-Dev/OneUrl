@@ -70,7 +70,10 @@ service:
         restart: always
 ```
 ### Authentication
-The project right now required an OAuth provider, you will need to configure an OAuth provider for logging in. You can use any authentication services that are capatible with OAuth 2.0 (Open id connect). If you don't know where to start, Auth0 is a good choise, or you can self host one with [Identity Server from Duende](https://duendesoftware.com/products/identityserver).
+OneUrl requires an OAuth 2.0 (OpenID Connect) compatible provider for user loggin and authentication.
+- Recommendations
+    - **Managed Service:** **Auth0** is a good choise if you're just starting.
+    - **Self-Hosted:** You can self-host one with projects like [Identity Server from Duende](https://duendesoftware.com/products/identityserver).
 
 ## Contributing
 Your contribution is highly valued and important for the project's improvement!
