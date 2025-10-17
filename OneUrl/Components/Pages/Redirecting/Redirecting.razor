@@ -33,7 +33,7 @@
         try
         {
             var client = ClientFactory.CreateClient("AnonymousClient");
-            link = await client.GetFromJsonAsync<UrlRecord>($"/redirect/{Target}");
+            link = await client.GetFromJsonAsync<UrlRecord>($"/redirect?id={Target}");
             await Task.Delay(3000);
             if (link is null || link.location is null) return;
             NavigationManager.NavigateTo(link.location);
