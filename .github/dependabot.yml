@@ -6,10 +6,10 @@
 version: 2
 updates:
   - package-ecosystem: "dotnet-sdk"
-    directory: "/OneUrl"
+    directory: "/OneUrl/"
     schedule:
       interval: "weekly"
   - package-ecosystem: "dotnet-sdk"
-    directory: "/OneUrlApi"
+    directory: "/OneUrlApi/"
     schedule:
       interval: "weekly"
