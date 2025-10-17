@@ -1,5 +1,8 @@
 @page "/rd/{target}"
+@attribute [AllowAnonymous]
+@using Microsoft.AspNetCore.Authorization
 @using OneUrl.Components.Layout
+@using OneUrl.Models
 @rendermode InteractiveServer
 @layout EmptyLayout
 @inject NavigationManager NavigationManager
@@ -9,59 +12,28 @@
 <PageTitle>Redirecting...</PageTitle>
 
 <div class="window">
-    @if (error is not null) {
-        <div class="error">
-            <div class="messages">
-                An error has occurred @error?.ToString()
-            </div>
-            <div class="actions">
-                <Button Color="ButtonColor.Warning" @onclick="NavBack">Back</Button>
-            </div>
-        </div>
-    }
-    else if (link is null)
-    {
-        <div class="error">
-            <div class="messages">
-                An error has occurred "Unavaliable target"
-            </div>
-            <div class="actions">
-                <Button Color="ButtonColor.Warning" @onclick="NavBack">Back</Button>
-            </div>
-        </div>
-    }
-    else
-    {
-        <div class="msg">
-            <div class="messages">
-                Navigating to @link.location
-            </div>
-            <div class="actions">
-                <Button Color="ButtonColor.Primary" @onclick="NavFoward">Back</Button>
-            </div>
-        </div>
-    }
+    <div>
+        Redirecting to @link
+    </div>
+    <div class="loading">
+        
+    </div>
 </div>
 
 @code {
     [Parameter]
     public string? Target {get; set;}
 
-    private Link? link;
+    private UrlRecord? link;
     private Exception? error;
     private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
 
-    private class Link
+    private async void Navigate() 
     {
-        public string? target {get; set;}
-        public string? location {get; set;}
-    }
-
-    private async void Navigate() {
         try
         {
-            var client = ClientFactory.CreateClient();
-            link = await client.GetFromJsonAsync<Link>($"{baseUri}/rd/{Target}");
+            var client = ClientFactory.CreateClient("AnonymousClient");
+            link = await client.GetFromJsonAsync<UrlRecord>($"/redirect?id={Target}");
             await Task.Delay(3000);
             if (link is null || link.location is null) return;
             NavigationManager.NavigateTo(link.location);
@@ -75,7 +47,7 @@
     private async void NavFoward()
     {
         var client = ClientFactory.CreateClient();
-        link = await client.GetFromJsonAsync<Link>($"{baseUri}/rd/{Target}");
+        link = await client.GetFromJsonAsync<UrlRecord>($"{baseUri}/rd/{Target}");
         if (link is null || link.location is null) return;
         NavigationManager.NavigateTo(link.location);
     }

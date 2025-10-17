@@ -1,1 +1,53 @@
 @page "/settings"
+@using System.Text.Json
+@using Microsoft.FluentUI.AspNetCore.Components
+@using OneUrl.Components.Layout
+@using System.Diagnostics
+@using OneUrl.Components.Pages.Settings.Shared
+@rendermode InteractiveServer
+@inject IHttpClientFactory ClientFactory
+
+<PageTitle>Settings</PageTitle>
+@if (delay is not null)
+{
+    <RedirectDelayCard @bind-Value="delay.RedirectDelay" />
+}
+
+@code {
+    private class SettingsModel
+    {
+        required public int RedirectDelay {get; set;}
+    }
+    private SettingsModel? delay;
+    private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
+    private JsonSerializerOptions options = new JsonSerializerOptions
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
+    private async void GetSettings()
+    {
+        var client = ClientFactory.CreateClient("DefaultClient");
+
+        try
+        {
+            var data = await client.GetFromJsonAsync<SettingsModel>("/setting", options);
+
+            if (data is not null)
+            {
+                delay = data;
+                StateHasChanged();
+            }
+        } 
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        GetSettings();
+        base.OnInitialized();
+    }
+}

@@ -1,5 +1,15 @@
 using OneUrl.Components;
 
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using OneUrl;
+using Microsoft.FluentUI.AspNetCore.Components;
+
+DotNetEnv.Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +17,56 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddHttpClient();
-builder.Services.AddBlazorBootstrap();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+})
+.AddCookie()
+.AddOpenIdConnect(options =>
+{
+    options.Authority = Environment.GetEnvironmentVariable("AUTH_DOMAIN")!;
+    options.ClientId = Environment.GetEnvironmentVariable("AUTH_CLIENTID")!;
+    options.ClientSecret = Environment.GetEnvironmentVariable("AUTH_CLIENT_SECRECT");
+    options.CallbackPath = new PathString("/Auth/Login");
+
+    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.ResponseType = OpenIdConnectResponseType.Code;
+
+    options.SaveTokens = true;
+    options.GetClaimsFromUserInfoEndpoint = true;
+
+    options.MapInboundClaims = false;
+    options.TokenValidationParameters.NameClaimType = JwtRegisteredClaimNames.Name;
+    options.TokenValidationParameters.RoleClaimType = "role";
+
+    options.Scope.Clear();
+    options.Scope.Add(OpenIdConnectScope.OpenId);
+    options.Scope.Add(OpenIdConnectScope.Profile);
+});
+
+builder.Services.AddAuthorizationBuilder()
+    .SetFallbackPolicy(new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build());
+
+builder.Services.AddScoped<AccessTokenHandler>();
+builder.Services.AddHttpClient("DefaultClient", options =>
+{
+    options.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_URL")!);
+})
+.AddHttpMessageHandler<AccessTokenHandler>();
+
+builder.Services.AddHttpClient("AnonymousClient", options =>
+{
+    options.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_URL")!);
+});
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddHttpClient();
+builder.Services.AddFluentUIComponents();
 
 var app = builder.Build();
 
@@ -21,13 +80,13 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseAntiforgery();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-
-DotNetEnv.Env.Load();
 
 app.Run();

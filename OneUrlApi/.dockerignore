@@ -1,0 +1,5 @@
+bin/
+obj/
+.env
+appsettings.Development.json
+OneUrlApi.csproj.user

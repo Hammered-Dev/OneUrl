@@ -1,14 +1,14 @@
 ﻿@page "/home"
+@using OneUrl.Components.Layout
+@using Microsoft.FluentUI.AspNetCore.Components
 @rendermode InteractiveServer
+
 @inject NavigationManager NavigationManager
 
-<EditUrlModal />
 <PageTitle>Home</PageTitle>
 
-<UrlList />
+<FluentToolbar>
+    <EditUrlModal />
+</FluentToolbar>
 
-@code {
-    private void Navigate() {
-        NavigationManager.NavigateTo("/home");
-    }
-}
+<UrlList />

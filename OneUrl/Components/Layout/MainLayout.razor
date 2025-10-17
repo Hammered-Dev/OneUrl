@@ -1,15 +1,26 @@
 ﻿@inherits LayoutComponentBase
 
-<BlazorBootstrapLayout StickyHeader="true">
-    <HeaderSection>
-        <AppBar />
-    </HeaderSection>
+@using Microsoft.FluentUI.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Authorization
+@using OneUrl.Components.Shared
 
-    <SidebarSection>
-        <NavBar />
-    </SidebarSection>
+<FluentToastProvider />
+<FluentDialogProvider />
+<FluentTooltipProvider />
+<FluentMessageBarProvider />
+<FluentMenuProvider />
 
-    <ContentSection>
-        @Body
-    </ContentSection>
-</BlazorBootstrapLayout>
+<CascadingAuthenticationState>
+    <FluentMainLayout NavMenuTitle="Navigation menu">
+        <Header>
+            OneUrl
+            <FluentSpacer />
+            <AccountAvatar />
+        </Header>
+        <Body>@Body</Body>
+        <NavMenuContent>
+            <FluentNavLink Href="/home" Icon="@(new Icons.Regular.Size24.Home())">Home</FluentNavLink>
+            <FluentNavLink Href="/settings" Icon="@(new Icons.Regular.Size24.Settings())">Settings</FluentNavLink>
+        </NavMenuContent>
+    </FluentMainLayout>
+</CascadingAuthenticationState>
