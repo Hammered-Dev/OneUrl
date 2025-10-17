@@ -91,7 +91,7 @@ If you find an issue, please head to the issue page and open a new issue. Here i
 We welcome all features ideas and bug fixes! Please make sure your PR includes the following:
 1. **Purpose:** The title should clearly state the feature or problem you're working on. If it's related to an open issue, please **hashtag the issue number**.
 2. **Key changes?** Describe the main changes you made, highlighting the affected file names or the most important code modification.
-3. **Demonstration** Provide screenshots, GIFs, or logs that demonstrate how your code works and the fix is successful.
+3. **Demonstration:** Provide screenshots, GIFs, or logs that demonstrate how your code works and the fix is successful.
 
 ### Development Prerequisites
 Please read our detailed development guide for setting up the environment: [Development.md](https://github.com/Hammered-Dev/OneUrl/blob/master/Development.md).
