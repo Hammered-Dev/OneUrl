@@ -1,6 +1,0 @@
-@OneUrlApi_HostAddress = http://localhost:5290
-
-GET {{OneUrlApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
