@@ -94,7 +94,7 @@ We welcome all features ideas and bug fixes! Please make sure your PR includes t
 3. **Demonstration** Provide screenshots, GIFs, or logs that demonstrate how your code works and the fix is successful.
 
 ### Development Prerequisites
-Please read our detailed development guide for setting up the environment: [Develop.md](link.to.develop.md).
+Please read our detailed development guide for setting up the environment: [Development.md](./Development.md).
 
 ### Code of Conduct
 To ensure a welcoming community, please adhere to our [CODE_OF_CONDUCT.md](link.to.codeofconduct).
