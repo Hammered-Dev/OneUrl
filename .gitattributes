@@ -1,0 +1,7 @@
+* text=auto
+*.cs text eol=lf
+*.json text eol=lf
+*.png -text
+*.jpg -text
+*.slnx text eol=crlf
+*.csproj text eol=crlf
