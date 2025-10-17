@@ -55,7 +55,7 @@ service:
     web:
         image: <web-image>
         environment:
-            API_URL=http://api:80
+            API_URL=http://api:8080
             AUTH_DOMAIN=<OAuth domain>
             AUTH_CLIENTID=<OAuth ClientID>
             AUTH_CLIENT_SECRECT=<OAuth Client Secrect>
