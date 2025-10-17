@@ -26,7 +26,7 @@ You will need following services to use OneUrl.
 ### Installation
 #### Manually
 > ⚠️ **Caution:** The manaul setup is experimental. Incorrect settings may affect your system environment.
-1. Go to [release page](link.to.release) and download the latest realease executable.
+1. Go to [release page](https://github.com/Hammered-Dev/OneUrl/releases) and download the latest realease executable.
 2. Set the environment variables, the following variables is required:
     - AUTH_ISSUER
     - AUTH_AUDIENCE
