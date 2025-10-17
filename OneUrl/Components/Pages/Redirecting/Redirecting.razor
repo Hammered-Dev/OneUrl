@@ -28,7 +28,8 @@
     private Exception? error;
     private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
 
-    private async void Navigate() {
+    private async void Navigate() 
+    {
         try
         {
             var client = ClientFactory.CreateClient("AnonymousClient");
