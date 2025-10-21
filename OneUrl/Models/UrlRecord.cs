@@ -2,6 +2,6 @@ namespace OneUrl.Models;
 
 public class UrlRecord
 {
-    public string? location { get; set; }
-    public string? target { get; set; }
+    public string? Location { get; set; }
+    public string? Target { get; set; }
 }
