@@ -13,6 +13,8 @@ public static class RedisService
     private static readonly ConfigurationOptions conf = new()
     {
         EndPoints = { { Environment.GetEnvironmentVariable("REDIS_HOST")!, int.Parse(Environment.GetEnvironmentVariable("REDIS_PORT")!) }, },
+        User = Environment.GetEnvironmentVariable("REDIS_USER"),
+        Password = Environment.GetEnvironmentVariable("REDIS_PASSWORD")
     };
     private static readonly ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(conf);
     private static readonly IDatabase database = redis.GetDatabase();

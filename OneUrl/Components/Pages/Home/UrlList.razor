@@ -5,8 +5,12 @@
 @using Blazicons
 @using Microsoft.FluentUI.AspNetCore.Components
 @using OneUrl.Models
+@using System.Diagnostics
 
-<FluentDataGrid Items="@records.AsQueryable()" Pagination="@paginationState">
+<FluentDataGrid Items="@records.AsQueryable()"
+    TGridItem="UrlRecord" 
+    Pagination="@paginationState" 
+    OnCellClick="onCellClicked">
     <PropertyColumn Property="@(p => p.Target)" Sortable="true" />
     <PropertyColumn Property="@(p => p.Location)" Sortable="true" />
 </FluentDataGrid>
@@ -42,6 +46,11 @@
     {
         var client = ClientFactory.CreateClient();
         await client.DeleteAsync($"{baseUri}/manage/urls/{id}");
+    }
+
+    private async Task onCellClicked(FluentDataGridCell<UrlRecord> cell)
+    {
+        Debug.WriteLine(cell.ChildContent!.Target);
     }
 
     private void Navigate(string? id)

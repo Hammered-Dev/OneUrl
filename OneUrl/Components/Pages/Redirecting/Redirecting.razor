@@ -35,8 +35,8 @@
             var client = ClientFactory.CreateClient("AnonymousClient");
             link = await client.GetFromJsonAsync<UrlRecord>($"/redirect?id={Target}");
             await Task.Delay(3000);
-            if (link is null || link.location is null) return;
-            NavigationManager.NavigateTo(link.location);
+            if (link is null || link.Location is null) return;
+            NavigationManager.NavigateTo(link.Location);
         }
         catch (Exception? e)
         {
@@ -48,8 +48,8 @@
     {
         var client = ClientFactory.CreateClient();
         link = await client.GetFromJsonAsync<UrlRecord>($"{baseUri}/rd/{Target}");
-        if (link is null || link.location is null) return;
-        NavigationManager.NavigateTo(link.location);
+        if (link is null || link.Location is null) return;
+        NavigationManager.NavigateTo(link.Location);
     }
 
     private async void NavBack()
