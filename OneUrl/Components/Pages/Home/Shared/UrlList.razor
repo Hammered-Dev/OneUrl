@@ -1,11 +1,18 @@
 @rendermode InteractiveServer
 @inject IHttpClientFactory ClientFactory
 @inject NavigationManager NavigationManager
+@inject IDialogService DialogService
 @using System.Text.Json
 @using Blazicons
 @using Microsoft.FluentUI.AspNetCore.Components
 @using OneUrl.Models
 @using System.Diagnostics
+
+<FluentToolbar Style="width: 100%">
+    <FluentButton IconStart="new Icons.Regular.Size16.Add()" OnClick="@(() => openDialog(null))" Appearance="Appearance.Accent">
+        Add
+    </FluentButton>
+</FluentToolbar>
 
 <FluentDataGrid Items="@records.AsQueryable()"
     TGridItem="UrlRecord" 
@@ -17,7 +24,7 @@
         <FluentButton Appearance="Appearance.Lightweight" IconStart="new Icons.Regular.Size24.Delete()" OnClick="@(() => deleteData(context.Target))">
             Delete
         </FluentButton>
-        <FluentButton Appearance="Appearance.Accent" IconStart="new Icons.Regular.Size24.Edit()">
+        <FluentButton Appearance="Appearance.Accent" IconStart="new Icons.Regular.Size24.Edit()" OnClick="@(() => openDialog(context))">
             Edit
         </FluentButton>
     </TemplateColumn>
@@ -55,9 +62,30 @@
         await client.DeleteAsync($"/manage/urls/{id}");
     }
 
-    private void Navigate(string? id)
+    private async Task openDialog(UrlRecord? record)
     {
-        NavigationManager.NavigateTo($"/rd/{id}");
+        DialogParameters parameters = new()
+        {
+            Title = "Add Url",
+            Width = "500px"
+        };
+
+        IDialogReference dialogReference = 
+            await DialogService.ShowDialogAsync<EditUrlDialog>(
+                parameters: parameters, data: record?? new UrlRecord{}
+            );
+        DialogResult? result = await dialogReference.Result;
+
+        if (result.Data is not null)
+        {
+            await sendData((UrlRecord)result.Data);
+        }
+    }
+
+    private async Task sendData(UrlRecord record)
+    {
+        var client = ClientFactory.CreateClient("DefaultClient");
+        await client.PostAsJsonAsync("/manage/urls", record);
     }
 
     protected override async Task OnInitializedAsync()
