@@ -26,7 +26,6 @@
 @code {
     private UrlRecord[] records = [];
     PaginationState paginationState = new PaginationState { ItemsPerPage = 10 };
-    private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
 
     private async Task<UrlRecord[]> fetchData()
     {
@@ -37,7 +36,7 @@
             {
                 PropertyNameCaseInsensitive = true
             };
-            var data = await client.GetFromJsonAsync<UrlRecord[]>($"{baseUri}/manage/urls");
+            var data = await client.GetFromJsonAsync<UrlRecord[]>("/manage/urls");
             if (data == null)
             {
                 return [];
@@ -52,8 +51,8 @@
 
     private async Task deleteData(string? id)
     {
-        var client = ClientFactory.CreateClient();
-        await client.DeleteAsync($"{baseUri}/manage/urls/{id}");
+        var client = ClientFactory.CreateClient("DefaultClient");
+        await client.DeleteAsync($"/manage/urls/{id}");
     }
 
     private void Navigate(string? id)
