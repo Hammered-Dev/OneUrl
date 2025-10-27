@@ -20,12 +20,12 @@
     RowSize="DataGridRowSize.Medium">
     <PropertyColumn Property="@(p => p.Target)" Sortable="true" />
     <PropertyColumn Property="@(p => p.Location)" Sortable="true" />
-    <TemplateColumn>
-        <FluentButton Appearance="Appearance.Lightweight" IconStart="new Icons.Regular.Size24.Delete()" OnClick="@(() => deleteData(context.Target))">
+    <TemplateColumn Title="Actions">
+        <FluentButton Appearance="Appearance.Lightweight" IconStart="new Icons.Regular.Size16.Delete()" OnClick="@(() => deleteData(context.Target))">
             Delete
         </FluentButton>
-        <FluentButton Appearance="Appearance.Accent" IconStart="new Icons.Regular.Size24.Edit()" OnClick="@(() => openDialog(context))">
-            Edit
+        <FluentButton Appearance="Appearance.Accent" IconStart="new Icons.Regular.Size16.Open()" OnClick="@(() => openLink(context))">
+            Open
         </FluentButton>
     </TemplateColumn>
 </FluentDataGrid>
@@ -60,6 +60,7 @@
     {
         var client = ClientFactory.CreateClient("DefaultClient");
         await client.DeleteAsync($"/manage/urls/{id}");
+        records = await fetchData();
     }
 
     private async Task openDialog(UrlRecord? record)
@@ -82,10 +83,16 @@
         }
     }
 
+    private async Task openLink(UrlRecord? record)
+    {
+        NavigationManager.NavigateTo($"rd/{record?.Target}");
+    }
+
     private async Task sendData(UrlRecord record)
     {
         var client = ClientFactory.CreateClient("DefaultClient");
         await client.PostAsJsonAsync("/manage/urls", record);
+        records = await fetchData();
     }
 
     protected override async Task OnInitializedAsync()
