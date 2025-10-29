@@ -48,12 +48,12 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi().AllowAnonymous();
     app.MapScalarApiReference("/docs").AllowAnonymous();
 
-    using var context = new UrlRecord();
+    using var context = new DatabaseService();
     context.Database.EnsureCreated();
 }
 else
 {
-    using var context = new UrlRecord();
+    using var context = new DatabaseService();
     context.Database.Migrate();
 }
 
