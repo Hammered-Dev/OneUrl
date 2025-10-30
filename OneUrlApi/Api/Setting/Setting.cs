@@ -11,6 +11,7 @@ public static class Setting
         group.MapPost("/", SettingsUtil.SaveSettings)
             .Produces(204);
         group.MapGet("/", SettingsUtil.GetSettings)
-            .Produces<SettingsModel>();
+            .Produces<SettingsModel>()
+            .AllowAnonymous();
     }
 }
