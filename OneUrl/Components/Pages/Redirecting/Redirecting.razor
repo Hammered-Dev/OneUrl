@@ -1,8 +1,11 @@
 @page "/rd/{target}"
 @attribute [AllowAnonymous]
+
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.FluentUI.AspNetCore.Components
 @using OneUrl.Components.Layout
 @using OneUrl.Models
+
 @rendermode InteractiveServer
 @layout EmptyLayout
 @inject NavigationManager NavigationManager
@@ -11,15 +14,16 @@
 
 <PageTitle>Redirecting...</PageTitle>
 
-<div class="window">
-    <div>
-        Redirecting to @link
-    </div>
-    <div class="loading">
-        
-    </div>
-</div>
-
+<FluentStack VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Center">
+    <FluentCard>
+        Redirecting to
+        @if (link is not null && link.Location is not null)
+        {
+            <h3>@link.Location</h3>
+        }
+        in @settings?.RedirectDelay secconds
+    </FluentCard>
+</FluentStack>
 @code {
     [Parameter]
     public string? Target {get; set;}

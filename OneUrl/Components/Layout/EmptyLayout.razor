@@ -1,3 +1,12 @@
 @inherits LayoutComponentBase
 
-@Body
+@using Microsoft.FluentUI.AspNetCore.Components
+
+<FluentLayout>
+    <FluentHeader>
+        OneUrl
+    </FluentHeader>
+    <FluentBodyContent>
+        @Body
+    </FluentBodyContent>
+</FluentLayout>
