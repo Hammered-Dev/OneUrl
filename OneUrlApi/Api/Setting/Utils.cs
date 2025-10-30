@@ -32,9 +32,10 @@ static public class SettingsUtil
     private static async Task UpdateSettings(SettingsModel settings)
     {
         var setting = db.Settings.First();
-
         setting = settings;
 
+        db.Update(setting);
+        
         await db.SaveChangesAsync();
     }
     
