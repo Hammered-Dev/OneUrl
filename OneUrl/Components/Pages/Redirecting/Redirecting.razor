@@ -25,8 +25,8 @@
     public string? Target {get; set;}
 
     private UrlRecord? link;
+    private SettingsModel? settings;
     private Exception? error;
-    private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
 
     private async void Navigate() 
     {
@@ -34,22 +34,19 @@
         {
             var client = ClientFactory.CreateClient("AnonymousClient");
             link = await client.GetFromJsonAsync<UrlRecord>($"/redirect?id={Target}");
-            await Task.Delay(3000);
-            if (link is null || link.Location is null) return;
+            settings = await client.GetFromJsonAsync<SettingsModel>("/settings");
+            if (link is null || link.Location is null || settings is null) 
+            {
+                NavBack();
+                return;
+            };
+            await Task.Delay(settings.RedirectDelay);
             NavigationManager.NavigateTo(link.Location);
         }
         catch (Exception? e)
         {
             error = e;
         }
-    }
-
-    private async void NavFoward()
-    {
-        var client = ClientFactory.CreateClient();
-        link = await client.GetFromJsonAsync<UrlRecord>($"{baseUri}/rd/{Target}");
-        if (link is null || link.Location is null) return;
-        NavigationManager.NavigateTo(link.Location);
     }
 
     private async void NavBack()
