@@ -1,50 +1,45 @@
-using System.Net;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 using OneUrlApi.Models;
-using OneUrlApi.Services;
 
 namespace OneUrlApi.Api.Setting;
 
 static public class SettingsUtil
 {
-    private static readonly JsonSerializerOptions options = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        NumberHandling = JsonNumberHandling.AllowReadingFromString
-    };
+    private static readonly DatabaseService db = new();
     public static SettingsModel GetSettings()
     {
-        if (!RedisService.CheckKeyExists("settings:general"))
-        {
-            SettingsModel model = new()
-            {
-                RedirectDelay = 3000,
-            };
-            SaveSettings(model);
-        }
-        var data = RedisService.GetHash("settings:general");
-        var serilized = JsonSerializer.Serialize(data);
-        var settings = JsonSerializer.Deserialize<SettingsModel>(serilized, options) ??
-            throw new HttpRequestException(
-                "Invalid value",
-                inner: null,
-                statusCode: HttpStatusCode.InternalServerError
-            );
+        var db = new DatabaseService();
+        var settings = db.Settings.First();
         return settings;
     }
 
-    public static IResult SaveSettings(SettingsModel settings)
+    public static async Task<IResult> SaveSettings(SettingsModel settings)
     {
-        Dictionary<string, string> settingDict = [];
+        var db = new DatabaseService();
 
-        foreach (var prop in settings.GetType().GetProperties())
+        if (await db.Settings.AnyAsync())
         {
-            settingDict.Add(prop.Name, (prop.GetValue(settings) ?? "").ToString() ?? "");
+            await CreateSettings(settings);
+        }
+        else
+        {
+            await UpdateSettings(settings);
         }
 
-        RedisService.SaveHash("settings:general", settingDict);
-
         return Results.NoContent();
+    }
+
+    private static async Task UpdateSettings(SettingsModel settings)
+    {
+        var setting = db.Settings.First();
+
+        setting = settings;
+
+        await db.SaveChangesAsync();
+    }
+    
+    private static async Task CreateSettings(SettingsModel settings)
+    {
+        await db.Settings.AddAsync(settings);
     }
 }
