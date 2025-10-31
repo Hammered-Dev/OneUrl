@@ -4,6 +4,7 @@
 @using OneUrl.Components.Layout
 @using System.Diagnostics
 @using OneUrl.Components.Pages.Settings.Shared
+@using OneUrl.Models
 @rendermode InteractiveServer
 @inject IHttpClientFactory ClientFactory
 
@@ -11,15 +12,11 @@
 @if (delay is not null)
 {
     <RedirectDelayCard @bind-Value="delay.RedirectDelay" />
+    <CollectInteractionActivityCard @bind-Value="delay.IsCollectingInteractCount" />
 }
 
 @code {
-    private class SettingsModel
-    {
-        required public int RedirectDelay {get; set;}
-    }
     private SettingsModel? delay;
-    private string? baseUri = System.Environment.GetEnvironmentVariable("API_URL");
     private JsonSerializerOptions options = new JsonSerializerOptions
     {
         PropertyNameCaseInsensitive = true

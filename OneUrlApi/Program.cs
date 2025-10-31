@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.OpenApi;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OneUrlApi.Api.Manage;
 using OneUrlApi.Api.Redirect;
 using OneUrlApi.Api.Setting;
+using OneUrlApi.Models;
 using Scalar.AspNetCore;
 
 DotNetEnv.Env.Load();
@@ -45,6 +47,14 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi().AllowAnonymous();
     app.MapScalarApiReference("/docs").AllowAnonymous();
+
+    using var context = new DatabaseService();
+    context.Database.EnsureCreated();
+}
+else
+{
+    using var context = new DatabaseService();
+    context.Database.Migrate();
 }
 
 app.UseHttpsRedirection();

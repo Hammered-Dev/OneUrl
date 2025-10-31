@@ -1,30 +1,34 @@
 namespace OneUrlApi.Api.Manage;
 
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using OneUrlApi.Models;
-using OneUrlApi.Services;
 
 public static class ManageEndpointUtils
 {
-    private static readonly string RedisPrefix = "records:";
-    public static IResult ConfigureUrl(UrlRecord record)
+    private static readonly DatabaseService db = new();
+    public static async Task<IResult> ConfigureUrl(UrlRecord record)
     {
-        Dictionary<string, string> pairs = new()
-        {
-            { "Target", record.Target },
-            { "Location", record.Location }
-        };
-        RedisService.SaveHash($"{RedisPrefix}{record.Target}", pairs);
+
+        db.Add(record);
+        await db.SaveChangesAsync();
         return Results.NoContent();
     }
 
-    public static UrlRecord?[] GetRecords()
+    public static async Task<UrlRecord[]> GetRecords()
     {
-        return RedisService.IndexUrl();
+
+        var urls = await db.UrlRecords.ToArrayAsync();
+
+        return urls;
     }
 
-    public static IResult Delete(string id)
+    public static async Task<IResult> Delete(string id)
     {
-        RedisService.Delete($"{RedisPrefix}{id}");
+        var entity = await db.UrlRecords.OrderBy(q => q.Target.Equals(id)).FirstAsync();
+        db.UrlRecords.Remove(entity);
+
+        await db.SaveChangesAsync();
         return Results.NoContent();
     }
 }

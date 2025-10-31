@@ -1,50 +1,60 @@
-using System.Net;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using OneUrlApi.Models;
-using OneUrlApi.Services;
 
 namespace OneUrlApi.Api.Setting;
 
 static public class SettingsUtil
 {
-    private static readonly JsonSerializerOptions options = new()
+    private static readonly DatabaseService db = new();
+    public static async Task<SettingsModel> GetSettings()
     {
-        PropertyNameCaseInsensitive = true,
-        NumberHandling = JsonNumberHandling.AllowReadingFromString
-    };
-    public static SettingsModel GetSettings()
-    {
-        if (!RedisService.CheckKeyExists("settings:general"))
+        var db = new DatabaseService();
+        if (!await db.Settings.AnyAsync())
         {
-            SettingsModel model = new()
+            var settings = new SettingsModel
             {
-                RedirectDelay = 3000,
+                RedirectDelay = 3000
             };
-            SaveSettings(model);
+            await CreateSettings(settings);
+            return await GetSettings();
         }
-        var data = RedisService.GetHash("settings:general");
-        var serilized = JsonSerializer.Serialize(data);
-        var settings = JsonSerializer.Deserialize<SettingsModel>(serilized, options) ??
-            throw new HttpRequestException(
-                "Invalid value",
-                inner: null,
-                statusCode: HttpStatusCode.InternalServerError
-            );
-        return settings;
+        else
+        {
+            var settings = db.Settings.First();
+            return settings;
+        }
     }
 
-    public static IResult SaveSettings(SettingsModel settings)
+    public static async Task<IResult> SaveSettings(SettingsModel settings)
     {
-        Dictionary<string, string> settingDict = [];
+        var db = new DatabaseService();
 
-        foreach (var prop in settings.GetType().GetProperties())
+        if (!await db.Settings.AnyAsync())
         {
-            settingDict.Add(prop.Name, (prop.GetValue(settings) ?? "").ToString() ?? "");
+            await CreateSettings(settings);
+        }
+        else
+        {
+            await UpdateSettings(settings);
         }
 
-        RedisService.SaveHash("settings:general", settingDict);
-
         return Results.NoContent();
+    }
+
+    private static async Task UpdateSettings(SettingsModel settings)
+    {
+        var setting = db.Settings.First();
+        setting = settings;
+
+        db.Update(setting);
+        
+        await db.SaveChangesAsync();
+    }
+    
+    private static async Task CreateSettings(SettingsModel settings)
+    {
+        await db.Settings.AddAsync(settings);
+        await db.SaveChangesAsync();
     }
 }

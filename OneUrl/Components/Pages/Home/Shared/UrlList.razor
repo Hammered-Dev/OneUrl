@@ -83,7 +83,7 @@
         }
     }
 
-    private async Task openLink(UrlRecord? record)
+    private void openLink(UrlRecord? record)
     {
         NavigationManager.NavigateTo($"rd/{record?.Target}");
     }
