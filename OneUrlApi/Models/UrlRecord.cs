@@ -8,5 +8,5 @@ public class UrlRecord
     public int Id { get; set; }
     required public string Target { get; set; }
     required public string Location { get; set; }
-
+    public int InteractCount { get; set; }
 }
