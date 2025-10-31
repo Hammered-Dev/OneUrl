@@ -12,6 +12,7 @@
 @if (delay is not null)
 {
     <RedirectDelayCard @bind-Value="delay.RedirectDelay" />
+    <CollectInteractionActivityCard @bind-Value="delay.IsCollectingInteractCount" />
 }
 
 @code {

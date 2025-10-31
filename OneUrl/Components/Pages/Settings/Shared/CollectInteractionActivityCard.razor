@@ -1,0 +1,23 @@
+﻿@using Microsoft.FluentUI.AspNetCore.Components
+
+<FluentCard MinimalStyle="true">
+    <FluentStack Orientation="Orientation.Horizontal" 
+        HorizontalAlignment="HorizontalAlignment.SpaceBetween"
+        VerticalAlignment="VerticalAlignment.Center">
+        Collect Interation Data
+        <FluentSwitch @bind-Value="Value" />
+    </FluentStack>
+</FluentCard>
+
+@code {
+    [Parameter]
+    public bool Value { get; set; }
+    [Parameter]
+    public EventCallback<bool> ValueChanged {get; set;}
+
+    private async Task OnInputChanged(ChangeEventArgs e)
+    {
+        Value = (bool)e.Value!;
+        await ValueChanged.InvokeAsync(Value);
+    }
+}
