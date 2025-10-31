@@ -55,5 +55,6 @@ static public class SettingsUtil
     private static async Task CreateSettings(SettingsModel settings)
     {
         await db.Settings.AddAsync(settings);
+        await db.SaveChangesAsync();
     }
 }
